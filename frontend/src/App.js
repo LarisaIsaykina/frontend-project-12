@@ -7,24 +7,86 @@ import {
   Route,
   useNavigate,
   useLocation,
-  useAuth,
+  Link,
+  Navigate,
 } from 'react-router-dom';
-import { NotFoundErrorPage } from './Components/NotFoundErrorPage.jsx';
-import { LoginPage } from './Components/LoginPage.jsx';
-import MainPage from './Components/MainPage';
+import useAuth from './hooks/index.jsx';
+import { Button, Navbar, Nav } from 'react-bootstrap';
 
-const App = () => {
+
+import { useState  } from 'react';
+import NotFoundErrorPage from './сomponents/NotFoundErrorPage.jsx';
+import LoginPage from './сomponents/LoginPage.jsx';
+import MainPage from './сomponents/PrivatePage.jsx';
+import AuthContext from './contexts';
+import PrivatePage from './сomponents/PrivatePage.jsx';
+
+const AuthProvider = ({ children }) => {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const logIn = () => setLoggedIn(true);
+  const logOut = () => {
+    localStorage.removeItem('userId');
+    setLoggedIn(false);
+  };
+  return (
+    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+const AuthButton = () => {
+  const auth = useAuth();
+  const location = useLocation();
 
   return (
+    auth.loggedIn
+      ? <Button onClick={auth.logOut}>Log out</Button>
+      : <Button as={Link} to="/login">Log in</Button>
+  );
+};
+
+const PrivateRoute = ({ children }) => {
+  const auth = useAuth();
+  const location = useLocation();
+
+  return (
+    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+  );
+};
+
+const App = () => {
+  return (
+  <AuthProvider>
     <BrowserRouter>
+    <Navbar bg="light" expand="lg">
+      <Navbar.Brand as={Link} to="/">Secret Place</Navbar.Brand>
+      <Nav className="mr-auto">
+        <Nav.Link as={Link} to="/private">Hexlet chat</Nav.Link>
+      </Nav>
+      <AuthButton />
+    </Navbar>
+
+
       <Routes>
-          <Route path="/" element={<MainPage/> } />
+          <Route path="/" element={ null } />
           <Route path="/login" element={<LoginPage/> } />
-          <Route path="/notFound" element={<NotFoundErrorPage />} />
+          <Route path="*" element={<NotFoundErrorPage />} />
+          <Route
+            path="/private"
+            element={(
+              <PrivateRoute>
+                <PrivatePage />
+              </PrivateRoute>
+            )}
+          />
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
+
 
 export default App;
 // function App() {
