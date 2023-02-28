@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "classnames": "^2.3.2",
     "eslint": "^8.34.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-functional": "^5.0.4",

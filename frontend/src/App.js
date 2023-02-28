@@ -15,11 +15,11 @@ import { Button, Navbar, Nav } from 'react-bootstrap';
 
 
 import { useState  } from 'react';
-import NotFoundErrorPage from './сomponents/NotFoundErrorPage.jsx';
-import LoginPage from './сomponents/LoginPage.jsx';
-import MainPage from './сomponents/PrivatePage.jsx';
+import NotFoundErrorPage from './components/NotFoundErrorPage.jsx';
+import LoginPage from './components/LoginPage.jsx';
+import MainPage from './components/PrivatePage.jsx';
 import AuthContext from './contexts';
-import PrivatePage from './сomponents/PrivatePage.jsx';
+import PrivatePage from './components/PrivatePage.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -61,20 +61,16 @@ const App = () => {
   <AuthProvider>
     <BrowserRouter>
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand as={Link} to="/">Secret Place</Navbar.Brand>
-      <Nav className="mr-auto">
-        <Nav.Link as={Link} to="/private">Hexlet chat</Nav.Link>
-      </Nav>
+      <Navbar.Brand as={Link} to="/">Hexlet chat</Navbar.Brand>
       <AuthButton />
     </Navbar>
 
 
       <Routes>
-          <Route path="/" element={ null } />
           <Route path="/login" element={<LoginPage/> } />
           <Route path="*" element={<NotFoundErrorPage />} />
           <Route
-            path="/private"
+            path="/"
             element={(
               <PrivateRoute>
                 <PrivatePage />
