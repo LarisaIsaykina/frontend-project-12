@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk, createEntityAdapter} from '@reduxjs/toolkit';
+import { fetchChannels } from './channelsSlice.js';
+// import { normalize, schema } from 'normalizr';
+
 import routes from '../contexts/routes.js';
 
 const getAuthHeader = () => {
@@ -18,6 +21,7 @@ export const fetchMessages = createAsyncThunk(
   'messages/fetch',
   async () => {
     const response = await axios.get(routes.dataPath(),  { headers: getAuthHeader() } );
+    console.log('response in Fetch Messages Thunk', response);
     return response.data.messages;
   },
 );
@@ -41,9 +45,12 @@ export const fetchMessages = createAsyncThunk(
 
   const messagesAdapter = createEntityAdapter();
 
+  const initState = messagesAdapter.getInitialState({ loadingStatus: 'idle', error: null });
+  console.log('initState', initState);
+
   const messagesSlice = createSlice({
     name: 'messages',
-    initialState: messagesAdapter.getInitialState({ loadingStatus: 'idle', error: null }),
+    initialState: initState,
     reducers: {
       addMessage: messagesAdapter.addOne,
       addMessages: messagesAdapter.addMany,
@@ -54,9 +61,10 @@ export const fetchMessages = createAsyncThunk(
           messagesAdapter.addMany(state, action);
           state.loadingStatus = 'idle';
           state.error = null;
+          console.log('action', action);
         })
-        // .addCase(fetchMessages.fulfilled, (state, action) => {
-        //     messagesAdapter.addOne(state, action);
+        // .addCase(fetchChannels.fulfilled, (state, action) => {
+        //     messagesAdapter.addMany(state, action);
         //     state.loadingStatus = 'idle';
         //     state.error = null;
         //   })
@@ -69,9 +77,9 @@ export const fetchMessages = createAsyncThunk(
       //   });
     },
   });
-  export const { actions } = messagesSlice;
+  export const { addMessage } = messagesSlice.actions;
   
-  export const selectors = messagesAdapter.getSelectors((state) => state.tasks);
+  export const selectors = messagesAdapter.getSelectors((state) => state.messages);
   
   export default messagesSlice.reducer;
   

@@ -72,7 +72,7 @@ const LoginPage = () => {
         } 
       },
     });
-
+console.log('formik in login page', formik);
 
       // <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
     return (
@@ -87,7 +87,7 @@ const LoginPage = () => {
 
           <FormGroup className="mb-3" controlId="username">
             <FormLabel>username</FormLabel>
-            <FormControl onChange={formik.handleChange} ref={inputRef}  value={formik.values.username} type="username" isInvalid={authFailed}
+            <FormControl onChange={formik.handleChange} ref={inputRef} value={formik.values.username} type="username" isInvalid={authFailed}
  placeholder="Ваш ник" />
             <Form.Text className="text-danger">
               {formik.touched.username && formik.errors.username ? (
@@ -109,7 +109,7 @@ const LoginPage = () => {
             <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
 
           </FormGroup>
-          <Button variant="primary" className="w-100 mb-3" type="submit">
+          <Button variant="primary" className="w-100 mb-3" type="submit" >
             Войти
           </Button>
           </fieldset>

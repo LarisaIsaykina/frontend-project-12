@@ -14,12 +14,21 @@ import useAuth from './hooks/index.jsx';
 import { Button, Navbar, Nav } from 'react-bootstrap';
 
 
-import { useState  } from 'react';
+import { useState, useEffect  } from 'react';
 import NotFoundErrorPage from './components/NotFoundErrorPage.jsx';
 import LoginPage from './components/LoginPage.jsx';
 import MainPage from './components/PrivatePage.jsx';
 import AuthContext from './contexts';
 import PrivatePage from './components/PrivatePage.jsx';
+
+// import { io } from 'socket.io-client';
+import { socket, SocketContext } from './contexts/SocketContext.js';
+
+
+// export const socket = io();
+
+
+
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -30,9 +39,11 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
   return (
+    <SocketContext.Provider  value={socket}> 
     <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
+    </SocketContext.Provider>
   );
 };
 
@@ -57,8 +68,44 @@ const PrivateRoute = ({ children }) => {
 };
 
 const App = () => {
+
+  useEffect(() => {
+
+  // socket.on('connect', () => {
+  //     setIsConnected(true);
+  //   });
+
+  //   socket.on('disconnect', () => {
+  //     setIsConnected(false);
+  //   });
+
+  socket.on('newMessage', (payload) => {
+    console.log(payload); // => { body: "new message", channelId: 7, id: 8, username: "admin" }
+  
+    });
+    
+    socket.on('newChannel', (payload) => {
+    console.log(payload) // { id: 6, name: "new channel", removable: true }
+    });
+  
+    socket.on('removeChannel', (payload) => {
+    console.log(payload); // { id: 6 };
+    });
+    socket.on('renameChannel', (payload) => {
+    console.log(payload); // { id: 7, name: "new name channel", removable: true }
+  });
+  
+  return () => {
+    socket.off('connect');
+    socket.off('disconnect');
+  };
+  
+  }, []);
+  
+  
   return (
-  <AuthProvider>
+    <AuthProvider>
+
     <BrowserRouter>
     <Navbar bg="light" expand="lg">
       <Navbar.Brand as={Link} to="/">Hexlet chat</Navbar.Brand>
@@ -80,30 +127,10 @@ const App = () => {
       </Routes>
     </BrowserRouter>
     </AuthProvider>
+
+
   );
 }
 
 
 export default App;
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;

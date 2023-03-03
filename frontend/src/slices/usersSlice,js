@@ -1,5 +1,7 @@
 // import axios from 'axios';
-// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
+// import { normalize, schema } from 'normalizr';
+
 // import routes from '../contexts/routes.js';
 
 // const getAuthHeader = () => {
@@ -14,12 +16,26 @@
 //   return {};
 // };
 
-// export const fetchChannels = createAsyncThunk(
-//   'channels/fetch',
+// const user = new schema.Entity('users');
+
+// // Define your comments schema
+// const comment = new schema.Entity('comments', {
+//   commenter: user
+// });
+
+// // Define your article
+// const article = new schema.Entity('articles', {
+//   author: user,
+//   comments: [comment]
+// });
+
+// const normalizedData = normalize(originalData, article);
+
+// export const addUser = createAsyncThunk(
+//   'users/add',
 //   async () => {
 //     const response = await axios.get(routes.dataPath(),  { headers: getAuthHeader() } );
-//     console.log('response', response);
-//     return response.data.channels;
+//     return response.data.users;
 //   },
 // );
 
@@ -38,21 +54,29 @@
 // //     return id;
 // //   },
 // // );
+// const channelsAdapter = createEntityAdapter();
 
-// const initialState = {
-//     ids: [],
-//     entities: {},
-//   };
-  
-
-// const usersSlice = createSlice({
-//   name: 'messages',
-//   initialState,
+// const channelsSlice = createSlice({
+//   name: 'channels',
+//   initialState: channelsAdapter.getInitialState({ loadingStatus: 'idle', error: null }),
+//   reducers: {
+//     addChannel: channelsAdapter.addOne,
+//     addChannels: channelsAdapter.addMany,
+//     removeChannel: channelsAdapter.removeOne,
+//   },
 //   extraReducers: (builder) => {
 //     builder
 //       .addCase(fetchChannels.fulfilled, (state, action) => {
-//         state.messages = action.payload;
+//         channelsAdapter.addMany(state, action);
+//         state.loadingStatus = 'idle';
+//         state.error = null;
 //       })
+//       // .addCase(fetchChannels.fulfilled, (state, action) => {
+//       //   channelsAdapter.addOne(state, action);
+//       //   state.loadingStatus = 'idle';
+//       //   state.error = null;
+//       // })
+//     //   .a
 //     //   .addCase(sendTask.fulfilled, (state, action) => {
 //     //     state.tasks.unshift(action.payload);
 //     //   })
@@ -62,19 +86,8 @@
 //     //   });
 //   },
 // });
+// export const { actions } = usersSlice;
 
-// const usersSlice = createSlice({
-//     name: 'users',
-//     initialState,
-//     reducers: {
-//       setUsers(state, { payload }) {
-//         // BEGIN (write your solution here)
-//         const { ids, entities } = payload;
-//         state.ids = ids;
-//         state.entities = entities;
-  
-//         // END
-//       },
-//     },
-//   });
-// export default usersSlice.reducer;
+// export const selectors = usersAdapter.getSelectors((state) => state.tasks);
+
+// export default channelsSlice.reducer;
