@@ -29,7 +29,7 @@ const LoginPage = () => {
     }, [errors]);
 
 
-    const location = useLocation();
+    // const location = useLocation();
     const navigate = useNavigate();
     const auth = useAuth();
 
@@ -72,7 +72,6 @@ const LoginPage = () => {
         } 
       },
     });
-console.log('formik in login page', formik);
 
       // <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
     return (
@@ -86,9 +85,9 @@ console.log('formik in login page', formik);
         <fieldset disabled={formik.isSubmitting}>
 
           <FormGroup className="mb-3" controlId="username">
-            <FormLabel>username</FormLabel>
+            <FormLabel htmlFor="username">username</FormLabel>
             <FormControl onChange={formik.handleChange} ref={inputRef} value={formik.values.username} type="username" isInvalid={authFailed}
- placeholder="Ваш ник" />
+ placeholder="Ваш ник" required />
             <Form.Text className="text-danger">
               {formik.touched.username && formik.errors.username ? (
                 <div className="text-danger">{formik.errors.username}</div>
@@ -98,14 +97,16 @@ console.log('formik in login page', formik);
           </FormGroup>
     
           <FormGroup  className="mb-3" controlId="password">
-            <FormLabel>password</FormLabel>
+            <FormLabel htmlFor="password">password</FormLabel>
             <FormControl value={formik.values.password} onChange={formik.handleChange} isInvalid={authFailed}
- type="password" placeholder="Пароль" />
+ type="password" placeholder="Пароль" required />
+
             <Form.Text className="text-danger">
               {formik.touched.password && formik.errors.password ? (
                 <div className="text-danger">{formik.errors.password}</div>
               ) : null}
             </Form.Text>
+
             <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
 
           </FormGroup>

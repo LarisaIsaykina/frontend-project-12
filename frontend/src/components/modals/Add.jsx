@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import _ from 'lodash';
 import { useDispatch } from 'react-redux'
 
-import { useFormik } from 'formik';
-import { Modal, FormGroup, FormControl, FormText, Button } from 'react-bootstrap';
+import { Modal, FormGroup, FormControl, FormText, FormLabel, Form, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
 
@@ -12,49 +11,60 @@ import { SocketContext } from '../../contexts/SocketContext.js';
 
 
 
-
 const Add = (props) => {
-  const { onHide } = props;
+  const { onHide, setCurrentChannel } = props;
   const dispatch = useDispatch();
 //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
-  const [validationFailed, setValidationFailed] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   const socket = useContext(SocketContext);
 
 
-  const f = useFormik({
-    initialValues: {
-        channelName: '',
-    },
-    validationSchema: Yup.object({
-      channelName: Yup.string().required('Обязательное поле'),
-    }),
-    onSubmit: ({ channelName }) => {
-        setDisabled(true);
+  const schema = Yup.string().required('Обязательное поле');
 
-        socket.emit('newChannel', { name: channelName }, acknowledge => {
-            if (acknowledge.status === 'ok') {
-                setDisabled(false);
-                dispatch(channelsActions.addChannel(acknowledge.data));
-                onHide();
+  const handleChange = (e) => {
+    setError('');
+    setInputValue(e.target.value);
+  }
 
-
-            } else {
-                f.setSubmitting(false);
-
-                setError('submission failed!')
-            }
-        });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    setDisabled(true);
+    try {
+      await schema.validate(inputValue);
+    } catch (e) {
+      console.log(e);
+      setError(e.message);
+      setDisabled(false);
+      return;
     }
-});
-console.log('formik', f);
+
+
+    socket.emit('newChannel', { name: inputValue }, acknowledge => {
+      if (acknowledge.status === 'ok') {
+          setDisabled(false);
+          dispatch(channelsActions.addChannel(acknowledge.data));
+          setInputValue('');
+          setCurrentChannel(acknowledge.data.id)
+          onHide();
+
+
+      } else {
+        setError('submission failed!');
+        setDisabled(false);
+
+      }
+    });
+  };
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-
-  console.log('formik in modal', f);
+  useEffect(() => {
+    inputRef.current.select();
+  }, [submitError]);
 
   return (
     <Modal show>
@@ -63,41 +73,32 @@ console.log('formik', f);
       </Modal.Header>
 
       <Modal.Body>
-        <form onSubmit={f.handleSubmit}>
+        <Form noValidate onSubmit={handleSubmit}>
           <FormGroup controlId="channelName">
-            <FormControl
-            //   <input
-            //   id="firstName"
-            //   name="firstName"
-            //   type="text"
-            //   onChange={formik.handleChange}
-            //   onBlur={formik.handleBlur}
-            //   value={formik.values.firstName}
-            // />
-              ref={inputRef}
-              onChange={f.handleChange}
-              onBlur={f.handleBlur}
-              value={f.values.channelName}
-              data-testid="channelName"
-              name="channelName"
-              type="channelName"
-              isIvalid={f.validationSchema}
-            />
-            <FormControl.Feedback type="invalid">mandatory field</FormControl.Feedback>
-            <FormText className="text-danger">
-              {f.touched.channelName && f.errors.channelName ? (
-                <div className="text-danger">{f.errors.channelName}</div>
-              ) : null}
-            </FormText>
 
+            <FormControl
+   
+              ref={inputRef}
+              onChange={handleChange}
+              // onBlur={handleBlur}
+              value={inputValue}
+              name="channelName"
+              type="text"
+              isInvalid={!!submitError}
+            />
+
+         {submitError ? (
+                <div className="text-danger">{submitError}</div>
+              ) : null}
 
           </FormGroup>
+ 
           <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>Close</Button>
           <Button type="submit" value="Submit" variant="primary" disabled={submitDisabled}  >Save changes</Button>
 
           </Modal.Footer>
-        </form>
+        </Form>
       </Modal.Body>
     </Modal>
   );
@@ -105,4 +106,5 @@ console.log('formik', f);
 
 export default Add;
 
-//{/* <input disabled={submitDisabled} type="submit" className="btn btn-primary mt-2" value="submit" /> */}
+//{/* <input disabled={submitDisabled} type="submit" className="btn btn-primary mt-2" value="submit" /> 
+//{/*<FormControl.Feedback type="invalid">mandatory field</FormControl.Feedback>*/}
