@@ -1,43 +1,50 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useRef, useContext } from "react";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Modal, FormGroup, FormControl, Form, Button } from "react-bootstrap";
 import { actions as channelsActions } from "../../slices/channelsSlice.js";
 import { useTranslation } from "react-i18next";
-import useFocus from "../../hooks/useFocus.jsx";
-import getSchema from "../../schemas/add.js";
+import getSchema from "../../schemas/add";
+import useSelect from "../../hooks/useSelect.jsx";
+import { selectors } from "../../slices/channelsSlice.js";
 import { SocketContext } from "../../contexts/SocketContext.jsx";
 import socket from "../../socket";
 import getNotifications from "../../toast/toast.js";
 import * as filter from "leo-profanity";
 import getDictionary from "../../leoprofanity/dictionary.js";
 
-const Add = (props) => {
+const Rename = (props) => {
   getDictionary();
-  const { t } = useTranslation();
-  const { onHide, setCurrentChannel } = props;
+  const { onHide, setCurrentChannel, currChat } = props;
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  // const socket = useContext(SocketContext);
-  // console.log("socket in Add", socket);
 
-  const channels = useSelector((state) =>
-    Object.values(state.channels.entities)
-  ); // обращение к состоянию
-  const chanNames = channels.map((channel) => channel.name);
+  const channels = useSelector(selectors.selectAll);
+  const currChatData = useSelector((state) =>
+    selectors.selectById(state, currChat)
+  );
+  const { name } = currChatData;
+
+  const chanNames = channels.map(({ name }) => {
+    return name;
+  });
+  const [inputValue, setInputValue] = useState(name);
+
   const schema = getSchema(chanNames);
 
   const handleChange = (e) => {
+    e.preventDefault();
     setError("");
     setInputValue(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setDisabled(true);
     try {
       await schema.validate(inputValue);
@@ -49,29 +56,40 @@ const Add = (props) => {
     }
 
     socket.emit(
-      "newChannel",
-      { name: filter.clean(inputValue) },
+      "renameChannel",
+      { id: currChat, name: filter.clean(inputValue) },
       (acknowledge) => {
         if (acknowledge.status === "ok") {
           setDisabled(false);
-          dispatch(channelsActions.addChannel(acknowledge.data));
+          dispatch(
+            channelsActions.renameChannel({
+              id: currChat,
+              name: filter.clean(inputValue),
+            })
+          );
           setInputValue("");
-          setCurrentChannel(acknowledge.data.id);
           onHide();
-          getNotifications.added();
+          getNotifications.renamed();
         }
 
         // else {
-        //   setError(t("err.backErr"));
         //   if (e.code === "ERR_NETWORK") {
         //     getNotifications.netFail();
         //   }
+        setError(t("err.backErr"));
         setDisabled(false);
       }
     );
   };
   const inputRef = useRef();
-  useFocus(inputRef, submitError);
+
+  useSelect(inputRef, submitError);
+  // useEffect(() => {
+  //   inputRef.current.focus();
+  // }, []);
+  // useEffect(() => {
+  //   inputRef.current.select();
+  // }, [submitError]);
 
   return (
     <Modal show>
@@ -81,15 +99,15 @@ const Add = (props) => {
 
       <Modal.Body>
         <Form noValidate onSubmit={handleSubmit}>
-          <FormGroup controlId="channelName">
+          <FormGroup controlId="inputValue">
             <FormControl
               ref={inputRef}
               onChange={handleChange}
               // onBlur={handleBlur}
               value={inputValue}
-              name="channelName"
+              name="inputValue"
               type="text"
-              isInvalid={!!submitError}
+              isInvalid={submitError}
               disabled={submitDisabled}
             />
 
@@ -117,7 +135,7 @@ const Add = (props) => {
   );
 };
 
-export default Add;
+export default Rename;
 
 //{/* <input disabled={submitDisabled} type="submit" className="btn btn-primary mt-2" value="submit" />
 //{/*<FormControl.Feedback type="invalid">mandatory field</FormControl.Feedback>*/}
