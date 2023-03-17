@@ -11,9 +11,10 @@ import socket from "../socket";
 import { selectors } from "../slices/channelsSlice.js";
 import * as filter from "leo-profanity";
 import getDictionary from "../leoprofanity/dictionary.js";
+import { useTranslation } from "react-i18next";
 
 const Chat = ({ currentChat }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   getDictionary();
 
   // const socket = useContext(SocketContext);
