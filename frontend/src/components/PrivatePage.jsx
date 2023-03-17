@@ -1,8 +1,6 @@
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Button, Navbar, Nav } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
-import React, { useEffect, useState } from "react";
-import useFetchData from "../hooks/useFetchData.jsx";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 import Channels from "./Channels.jsx";
 import Chat from "./Chat.jsx";
 import useAuth from "../hooks/useAuth.jsx";
@@ -10,17 +8,10 @@ import useAuth from "../hooks/useAuth.jsx";
 import { useTranslation } from "react-i18next";
 
 const PrivatePage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const dispatch = useDispatch();
-
   const [currentChannel, setCurrentChannel] = useState(1); // какого канала показан чат
 
   const auth = useAuth();
   console.log("!!!PrivatePage auth", auth);
-
-  const { t } = useTranslation();
 
   return (
     <>

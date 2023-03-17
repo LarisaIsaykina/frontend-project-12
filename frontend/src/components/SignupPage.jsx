@@ -1,7 +1,6 @@
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Button, Navbar, Nav } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
-import { actions as usersActions } from "../slices/usersSlice.js";
+import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import useFocus from "../hooks/useFocus.jsx";
 
 import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
@@ -11,7 +10,6 @@ import useAuth from "../hooks/useAuth.jsx";
 import { Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import signupSchema from "../schemas/signup.js";
-import socket from "../socket.js";
 import getNotifications from "../toast/toast.js";
 
 const SignupPage = () => {
@@ -21,11 +19,7 @@ const SignupPage = () => {
 
   const inputRef = useRef();
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+  useFocus();
 
   const navigate = useNavigate();
   const auth = useAuth();

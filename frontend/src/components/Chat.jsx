@@ -1,14 +1,12 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useFocus from "../hooks/useFocus.jsx";
 
-import { actions as messagesActions } from "../slices/messagesSlice.js";
 // import { selectors as messagesSelectors } from "../slices/messagesSlice.js";
 
 // import { fetchMessages } from "../slices/messagesSlice.js";
 import { SocketContext } from "../contexts/SocketContext.jsx";
 import useAuth from "../hooks/useAuth.jsx";
-import { useTranslation } from "react-i18next";
 import socket from "../socket";
 import { selectors } from "../slices/channelsSlice.js";
 import * as filter from "leo-profanity";

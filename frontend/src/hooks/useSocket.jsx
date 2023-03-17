@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import socket from "../socket";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actions as messagesActions } from "../slices/messagesSlice.js";
 import getNotifications from "../toast/toast";
 

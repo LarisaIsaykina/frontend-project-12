@@ -1,5 +1,4 @@
-import React from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import i18n from "../locales/i18n";
 

@@ -11,5 +11,5 @@ export default (ref, dependency) => {
     if (ref.current) {
       ref.current.focus();
     }
-  }, []);
+  }, [ref]);
 };

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef } from "react";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import getSchema from "../../schemas/add";
 import useSelect from "../../hooks/useSelect.jsx";
 import { selectors } from "../../slices/channelsSlice.js";
-import { SocketContext } from "../../contexts/SocketContext.jsx";
 import socket from "../../socket";
 import getNotifications from "../../toast/toast.js";
 import * as filter from "leo-profanity";
@@ -17,7 +16,7 @@ import getDictionary from "../../leoprofanity/dictionary.js";
 const Rename = (props) => {
   getDictionary();
   const { onHide, setCurrentChannel, currChat } = props;
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда

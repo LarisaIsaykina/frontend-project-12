@@ -1,6 +1,5 @@
-import axios from "axios";
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { fetchChannels, actions as channelsActions } from "./channelsSlice.js";
+import { actions as channelsActions } from "./channelsSlice.js";
 
 // import { normalize, schema } from 'normalizr';
 

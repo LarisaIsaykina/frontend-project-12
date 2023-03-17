@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useFormik } from "formik";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import loginSchema from "../schemas/login.js";
 import useFocus from "../hooks/useFocus.jsx";

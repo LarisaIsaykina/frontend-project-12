@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import cn from "classnames";
 import getModal from "./modals/index.js";
 // import socket from '../../../App';
-import { SocketContext } from "../contexts/SocketContext.jsx";
-import { actions as channelsActions } from "../slices/channelsSlice.js";
+
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import useAuth from "../hooks/useAuth.jsx";

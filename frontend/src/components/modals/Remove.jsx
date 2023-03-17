@@ -1,10 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import _ from "lodash";
 import { useDispatch } from "react-redux";
 import { Modal, Button, Form } from "react-bootstrap";
 import { actions as channelsActions } from "../../slices/channelsSlice.js";
 import { useTranslation } from "react-i18next";
-import { SocketContext } from "../../contexts/SocketContext.jsx";
 import socket from "../../socket";
 import getNotifications from "../../toast/toast.js";
 

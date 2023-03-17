@@ -1,10 +1,4 @@
-import axios from "axios";
-import {
-  createSlice,
-  createAsyncThunk,
-  createEntityAdapter,
-} from "@reduxjs/toolkit";
-import { normalize, schema } from "normalizr";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 
 const usersAdapter = createEntityAdapter();
 

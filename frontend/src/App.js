@@ -4,13 +4,12 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  useNavigate,
   useLocation,
   Link,
   Navigate,
 } from "react-router-dom";
 import useAuth from "./hooks/useAuth.jsx";
-import { Button, Navbar, Nav } from "react-bootstrap";
+import { Button, Navbar } from "react-bootstrap";
 import { useState } from "react";
 
 // import { useState, useEffect } from "react";
@@ -21,13 +20,10 @@ import PrivatePage from "./components/PrivatePage.jsx";
 import SignupPage from "./components/SignupPage.jsx";
 import { useTranslation } from "react-i18next";
 
-import { SocketContext } from "./contexts/SocketContext.jsx";
-import socket from "./socket";
 import useSocket from "./hooks/useSocket";
 import useToken from "./hooks/useToken";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 // import useFetchData from "./hooks/useFetchData";
-import useSimpleFetch from "./hooks/useSimpleFetch";
 import getNotifications from "./toast/toast.js";
 
 import React, { useEffect } from "react";
@@ -35,14 +31,13 @@ import axios from "axios";
 import routes from "./contexts/routes";
 import getAuthHeader from "./util/getHeader";
 import getNormalized from "./util/getNormalized";
-import { actions as usersActions } from "./slices/usersSlice.js";
+// import { actions as usersActions } from "./slices/usersSlice.js";
 import { actions as messagesActions } from "./slices/messagesSlice.js";
 import { actions as channelsActions } from "./slices/channelsSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 
 const AuthButton = () => {
   const auth = useAuth();
-  const location = useLocation();
   const { t } = useTranslation();
 
   return auth.loggedIn ? (
@@ -101,8 +96,6 @@ const App = () => {
   const [requestErr, setError] = useState(null);
   useSocket();
 
-  const auth = useAuth();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -140,10 +133,10 @@ const App = () => {
   // useSimpleFetch();
   // useFetchData();
   // console.log("loc stor in app", localStorage.getItem("userId"));
-  // console.log("auth in app", auth);
-  const test = useSelector((s) => {
-    console.log("i check redux store", s.channels);
-  });
+  // // console.log("auth in app", auth);
+  // const test = useSelector((s) => {
+  //   console.log("i check redux store", s.channels);
+  // });
 
   return (
     <BrowserRouter>
