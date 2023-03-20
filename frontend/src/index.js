@@ -16,20 +16,19 @@ import i18n from "./locales/i18n";
 import { socket } from "./socket";
 import { SocketContext } from "./contexts/SocketContext";
 import AuthContext from "./contexts/authContext";
-import useAuth from "./hooks/useAuth";
+import { Provider as RollProvider } from "@rollbar/react";
+
+// same configuration you would create for the Rollbar.js SDK
+const rollbarConfig = {
+  accessToken: "POST_CLIENT_ITEM_ACCESS_TOKEN",
+  environment: "production",
+};
 
 // export const socket = io();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const AuthProvider = ({ children }) => {
-  const auth = useAuth();
-
-  // if (!token) {
-  //   <Navigate to="/login" state={{ from: location }} />;
-  // }
-  // <Navigate to="/login" state={{ from: location }} />;
-
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -44,6 +43,7 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
     setCurrentUser(null);
   };
+
   const props = {
     loggedIn,
     logIn,
@@ -52,6 +52,7 @@ const AuthProvider = ({ children }) => {
     setUser,
     clearUser,
   };
+  console.log("props when passing to context", props);
   return (
     // <SocketContext.Provider value={socket}>
     <AuthContext.Provider value={props}>{children}</AuthContext.Provider>
@@ -62,13 +63,15 @@ const AuthProvider = ({ children }) => {
 
 root.render(
   <React.StrictMode>
-    <I18nextProvider i18n={i18n}>
-      <AuthProvider>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </AuthProvider>
-    </I18nextProvider>
+    <RollProvider config={rollbarConfig}>
+      <I18nextProvider i18n={i18n}>
+        <AuthProvider>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </AuthProvider>
+      </I18nextProvider>
+    </RollProvider>
   </React.StrictMode>
 );
 

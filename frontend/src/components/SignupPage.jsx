@@ -19,7 +19,7 @@ const SignupPage = () => {
 
   const inputRef = useRef();
 
-  useFocus();
+  useFocus(inputRef);
 
   const navigate = useNavigate();
   const auth = useAuth();

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-export default (ref, dependency) => {
+export default (ref, dependency = null) => {
   useEffect(() => {
     if (ref.current) {
       ref.current.focus();

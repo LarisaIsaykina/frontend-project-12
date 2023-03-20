@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useRef } from "react";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import loginSchema from "../schemas/login.js";
 import useFocus from "../hooks/useFocus.jsx";
@@ -19,6 +19,7 @@ import getNotifications from "../toast/toast.js";
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
+  const location = useLocation();
 
   const [errors, writeError] = useState([]);
   const tok = localStorage.getItem("userId") ?? null;
@@ -40,35 +41,40 @@ const LoginPage = () => {
     validationSchema: loginSchema,
 
     onSubmit: async ({ username, password }) => {
+      setAuthFailed(false);
+
+      console.log("onsubmit", username, password);
+
       try {
-        const res = await axios.post(routes.loginPath(), {
+        const { data } = await axios.post(routes.loginPath(), {
           username,
           password,
         });
         // const { token } = res.data;
+        console.log("data in success response", data);
+        const tokenStr = JSON.stringify(data);
 
-        // storing input name: "Johname
-        console.log("res data when successfully log in", res.data);
-        const tokenStr = JSON.stringify(res.data);
         localStorage.setItem("userId", tokenStr);
         auth.logIn();
-        auth.setUser(res.data);
-        setAuthFailed(false);
+        auth.setUser(data);
 
-        // const { from } = location.state ?? { from: { pathname: '/' } }; // если location.state === null
-        navigate("/");
+        const { from } = location.state || { from: { pathname: "/" } };
+        navigate(from);
       } catch (e) {
         formik.setSubmitting(false);
+        console.log("erros response data", e.response.data);
+
         if (e.code === "ERR_NETWORK") {
           console.log("net fail in App");
           getNotifications.netFail();
-        } else if (e.isAxiosError && e.response.status === 401) {
-          inputRef.current.select();
-          console.log("full error in catch block", e);
+          return;
+        } else if (e.response.status === 401) {
+          setAuthFailed(true);
 
+          inputRef.current.select();
+          console.log("error response", e.response);
           return;
         }
-        setAuthFailed(true);
 
         throw e;
       }

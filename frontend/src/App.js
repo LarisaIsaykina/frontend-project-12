@@ -4,6 +4,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
+  useNavigate,
   useLocation,
   Link,
   Navigate,
@@ -15,55 +16,70 @@ import { useState } from "react";
 // import { useState, useEffect } from "react";
 import NotFoundErrorPage from "./components/NotFoundErrorPage.jsx";
 import LoginPage from "./components/LoginPage.jsx";
-import AuthContext from "./contexts/authContext";
+// import AuthContext from "./contexts/authContext";
 import PrivatePage from "./components/PrivatePage.jsx";
 import SignupPage from "./components/SignupPage.jsx";
 import { useTranslation } from "react-i18next";
 
 import useSocket from "./hooks/useSocket";
-import useToken from "./hooks/useToken";
 import { ToastContainer } from "react-toastify";
 // import useFetchData from "./hooks/useFetchData";
 import getNotifications from "./toast/toast.js";
 
 import React, { useEffect } from "react";
-import axios from "axios";
-import routes from "./contexts/routes";
-import getAuthHeader from "./util/getHeader";
-import getNormalized from "./util/getNormalized";
-// import { actions as usersActions } from "./slices/usersSlice.js";
-import { actions as messagesActions } from "./slices/messagesSlice.js";
-import { actions as channelsActions } from "./slices/channelsSlice.js";
-import { useDispatch, useSelector } from "react-redux";
+
+import useToken from "./hooks/useToken";
 
 const AuthButton = () => {
   const auth = useAuth();
   const { t } = useTranslation();
+  const loadingState = useToken();
 
-  return auth.loggedIn ? (
-    <Button onClick={auth.logOut}>{t("btns.logout")}</Button>
-  ) : (
+  if (loadingState === "pending") {
+    return "";
+  }
+  if (loadingState === "error") {
     <Button as={Link} to="/login">
       {t("btns.login")}
-    </Button>
-  );
+    </Button>;
+  }
+  if (loadingState === "fullfilled" && !auth.loggedIn) {
+    <Button as={Link} to="/login">
+      {t("btns.login")}
+    </Button>;
+  }
+  if (loadingState === "fullfilled" || auth.loggedIn) {
+    return <Button onClick={auth.logOut}>{t("btns.logout")}</Button>;
+  }
+  return null;
 };
 
 const PrivateRoute = ({ children }) => {
+  const navigate = useNavigate();
   const auth = useAuth();
-  const location = useLocation();
 
-  return auth.loggedIn ? (
-    children
-  ) : (
-    <Navigate to="/login" state={{ from: location }} />
-  );
+  const loadingState = useToken();
+  console.log("!!loading state", loadingState);
+  if (loadingState === "pending") {
+    return "LOADING";
+  }
+  if (loadingState === "error") {
+    navigate("/login");
+    return;
+  }
+  if (loadingState === "fullfilled" && !auth.loggedIn) {
+    navigate("/login");
+  }
+  if (loadingState === "fullfilled" || auth.loggedIn) {
+    return children;
+  }
+  return null;
 };
 
 const Rooter = () => {
   const { t } = useTranslation();
-  const auth = useAuth();
-  useToken(auth);
+  useSocket();
+
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -92,52 +108,6 @@ const Rooter = () => {
 };
 
 const App = () => {
-  const dispatch = useDispatch();
-  const [requestErr, setError] = useState(null);
-  useSocket();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const header = getAuthHeader();
-        console.log("AUTH header", header);
-        const { data } = await axios.get(routes.dataPath(), {
-          headers: getAuthHeader(),
-        });
-        console.log("data", data);
-
-        const normalizedData = getNormalized(data);
-        console.log("normalizedData", JSON.stringify(normalizedData, null, 2));
-        const { channels } = normalizedData.entities;
-        const messages = normalizedData.entities.messages ?? {};
-        console.log("users, chan , messag for dispatching", channels, messages);
-        console.log("!!!dispatch", dispatch);
-
-        // dispatch(usersActions.addUsers(Object.values(users)));
-        dispatch(channelsActions.addChannels(Object.values(channels)));
-        dispatch(messagesActions.addMessages(Object.values(messages)));
-      } catch (e) {
-        console.log("e error caught", e);
-
-        setError(e);
-        if (e.code === "ERR_NETWORK") {
-          console.log("net fail in App");
-          getNotifications.netFail();
-        }
-        throw e;
-      }
-    };
-
-    fetchData();
-  }, []);
-  // useSimpleFetch();
-  // useFetchData();
-  // console.log("loc stor in app", localStorage.getItem("userId"));
-  // // console.log("auth in app", auth);
-  // const test = useSelector((s) => {
-  //   console.log("i check redux store", s.channels);
-  // });
-
   return (
     <BrowserRouter>
       <Rooter />
