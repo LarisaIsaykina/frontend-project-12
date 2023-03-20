@@ -1,4 +1,4 @@
-export default {
+const ru = {
   translation: {
     header1: "Hexlet Chat",
     headerChan: "Каналы",
@@ -69,3 +69,5 @@ export default {
     },
   },
 };
+
+export default ru;

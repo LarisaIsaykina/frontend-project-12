@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
-export default (ref, dependency = null) => {
+const useFocus = (ref, dependency = null) => {
   useEffect(() => {
     if (ref.current) {
       ref.current.focus();
     }
-  }, [dependency]);
+  }, [ref, dependency]);
 
   useEffect(() => {
     if (ref.current) {
@@ -13,3 +13,5 @@ export default (ref, dependency = null) => {
     }
   }, [ref]);
 };
+
+export default useFocus;

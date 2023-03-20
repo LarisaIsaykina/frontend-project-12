@@ -21,14 +21,14 @@ const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const location = useLocation();
 
-  const [errors, writeError] = useState([]);
+  // const [errors, writeError] = useState([]);
   const tok = localStorage.getItem("userId") ?? null;
   console.log("token from locstorage must be undef", tok);
 
   const { t } = useTranslation();
 
   const inputRef = useRef();
-  useFocus(inputRef, errors);
+  useFocus(inputRef);
   const navigate = useNavigate();
   const auth = useAuth();
   console.log("auth in login", auth);

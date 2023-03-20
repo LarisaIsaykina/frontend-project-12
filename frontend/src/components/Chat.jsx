@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import useFocus from "../hooks/useFocus.jsx";
 
 // import { selectors as messagesSelectors } from "../slices/messagesSlice.js";
 
 // import { fetchMessages } from "../slices/messagesSlice.js";
-import { SocketContext } from "../contexts/SocketContext.jsx";
+// import { SocketContext } from "../contexts/SocketContext.jsx";
 import useAuth from "../hooks/useAuth.jsx";
 import socket from "../socket";
 import { selectors } from "../slices/channelsSlice.js";
@@ -25,9 +25,9 @@ const Chat = ({ currentChat }) => {
   const [message, setMessage] = useState("");
   const [submitDisabled, setDisabled] = useState(false);
   const [submitError, setError] = useState("");
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  // const [isConnected, setIsConnected] = useState(socket.connected);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const inputRef = useRef();
 

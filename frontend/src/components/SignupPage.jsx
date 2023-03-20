@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import useFocus from "../hooks/useFocus.jsx";
 
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useFormik } from "formik";
 import routes from "../contexts/routes.js";
 import useAuth from "../hooks/useAuth.jsx";

@@ -5,13 +5,11 @@ import {
   Routes,
   Route,
   useNavigate,
-  useLocation,
   Link,
-  Navigate,
 } from "react-router-dom";
 import useAuth from "./hooks/useAuth.jsx";
 import { Button, Navbar } from "react-bootstrap";
-import { useState } from "react";
+// import { useState } from "react";
 
 // import { useState, useEffect } from "react";
 import NotFoundErrorPage from "./components/NotFoundErrorPage.jsx";
@@ -24,9 +22,10 @@ import { useTranslation } from "react-i18next";
 import useSocket from "./hooks/useSocket";
 import { ToastContainer } from "react-toastify";
 // import useFetchData from "./hooks/useFetchData";
-import getNotifications from "./toast/toast.js";
+// import getNotifications from "./toast/toast.js";
 
-import React, { useEffect } from "react";
+import React from "react";
+// import React, { useEffect } from "react";
 
 import useToken from "./hooks/useToken";
 

@@ -1,9 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import useAuth from "../hooks/useAuth";
-import { Outlet } from "react-router-dom";
-import AuthContext from "../contexts/authContext";
-import { useRouteError } from "react-router-dom";
 
 const NotFoundErrorPage = () => {
   // const error = useRouteError();
@@ -18,7 +15,7 @@ const NotFoundErrorPage = () => {
   // const { loggedIn, logIn, logOut, currentUser, setCurrentUser } = auth;
   // console.log("loggedIn", loggedIn);
   // console.log("currentUser", currentUser);
-  const auth = useAuth();
+  // const auth = useAuth();
 
   const { t } = useTranslation();
   return (

@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
+
 import cn from "classnames";
 import getModal from "./modals/index.js";
 // import socket from '../../../App';
@@ -13,19 +15,19 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { useTranslation } from "react-i18next";
 
 const Channels = ({ setCurrentChannel, state }) => {
-  const [channelsOnPage, setChannels] = useState(null);
-  const { t, i18n } = useTranslation();
+  // const [channelsOnPage, setChannels] = useState(null);
+  const { t } = useTranslation();
 
   const btnRef = useRef(null);
   const auth = useAuth();
-  const { username } = auth.currentUser;
+  // const { username } = auth.currentUser;
 
   const channels = useSelector(selectors.selectAll);
   console.log("channels in comp", channels);
 
   const [modalInfo, setModalInfo] = useState({ type: null, id: null });
 
-  const hideModal = (e) => {
+  const hideModal = () => {
     btnRef.current.focus();
 
     setModalInfo({ type: null, id: null });

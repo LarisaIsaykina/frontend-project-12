@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { actions as messagesActions } from "../slices/messagesSlice.js";
 import getNotifications from "../toast/toast";
 
-export default () => {
+const useSocket = () => {
   // const messages = useSelector(Object.values(.channels.entities));
   const dispatch = useDispatch();
 
@@ -49,5 +49,6 @@ export default () => {
     socket.on("renameChannel", (payload) => {
       console.log(payload); // { id: 7, name: "new name channel", removable: true }
     });
-  }, []);
+  }, [dispatch]);
 };
+export default useSocket;

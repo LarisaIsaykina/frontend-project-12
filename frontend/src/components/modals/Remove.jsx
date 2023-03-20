@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import _ from "lodash";
+// import _ from "lodash";
 import { useDispatch } from "react-redux";
 import { Modal, Button, Form } from "react-bootstrap";
 import { actions as channelsActions } from "../../slices/channelsSlice.js";
@@ -8,9 +8,9 @@ import socket from "../../socket";
 import getNotifications from "../../toast/toast.js";
 
 const Remove = (props) => {
-  const { onHide, currChat, setCurrentChannel, modalInfo } = props;
+  const { onHide, setCurrentChannel, modalInfo } = props;
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import { useBootstrapBreakpoints } from "react-bootstrap/esm/ThemeProvider";
 import useAuth from "./useAuth";
 // import { useNavigate, useLocation } from "react-router-dom";
 
-export default () => {
+const useToken = () => {
   // const navigate = useNavigate();
   const auth = useAuth();
 
@@ -21,7 +22,8 @@ export default () => {
     } else {
       setLoading("error");
     }
-  }, []);
+  }, [auth]);
 
   return loading;
 };
+export default useToken;
