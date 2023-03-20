@@ -49,6 +49,6 @@ const useSocket = () => {
     socket.on("renameChannel", (payload) => {
       console.log(payload); // { id: 7, name: "new name channel", removable: true }
     });
-  }, [dispatch]);
+  }, []);
 };
 export default useSocket;

@@ -18,3 +18,7 @@ deploy:
 
 start:
 	make start-backend & make start-frontend
+
+	
+lint:
+	npx eslint .

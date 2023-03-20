@@ -32,10 +32,12 @@ import useToken from "./hooks/useToken";
 const AuthButton = () => {
   const auth = useAuth();
   const { t } = useTranslation();
-  const loadingState = useToken();
+  const { loggedIn } = auth;
+
+  const loadingState = useToken(loggedIn);
 
   if (loadingState === "pending") {
-    return "";
+    return null;
   }
   if (loadingState === "error") {
     <Button as={Link} to="/login">
@@ -54,10 +56,13 @@ const AuthButton = () => {
 };
 
 const PrivateRoute = ({ children }) => {
+  console.log("private");
+
   const navigate = useNavigate();
   const auth = useAuth();
+  const { loggedIn } = auth;
 
-  const loadingState = useToken();
+  const loadingState = useToken(loggedIn);
   console.log("!!loading state", loadingState);
   if (loadingState === "pending") {
     return "LOADING";
@@ -68,6 +73,7 @@ const PrivateRoute = ({ children }) => {
   }
   if (loadingState === "fullfilled" && !auth.loggedIn) {
     navigate("/login");
+    return;
   }
   if (loadingState === "fullfilled" || auth.loggedIn) {
     return children;

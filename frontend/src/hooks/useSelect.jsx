@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
-export default (ref, dependency) => {
+const useSelect = (ref, dependency = null) => {
   useEffect(() => {
     ref.current.focus();
   }, [ref]);
@@ -8,3 +8,4 @@ export default (ref, dependency) => {
     ref.current.select();
   }, [dependency]);
 };
+export default useSelect;
