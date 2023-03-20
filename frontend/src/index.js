@@ -13,7 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./locales/i18n";
 import AuthContext from "./contexts/authContext";
-import { Provider as RollProvider } from "@rollbar/react";
+import { Provider as RollProvider, ErrorBoundary } from "@rollbar/react";
 
 // same configuration you would create for the Rollbar.js SDK
 
@@ -62,13 +62,15 @@ const AuthProvider = ({ children }) => {
 root.render(
   <React.StrictMode>
     <RollProvider config={rollbarConfig}>
-      <I18nextProvider i18n={i18n}>
-        <AuthProvider>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </AuthProvider>
-      </I18nextProvider>
+      <ErrorBoundary>
+        <I18nextProvider i18n={i18n}>
+          <AuthProvider>
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </AuthProvider>
+        </I18nextProvider>
+      </ErrorBoundary>
     </RollProvider>
   </React.StrictMode>
 );
