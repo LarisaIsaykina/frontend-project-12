@@ -7,21 +7,19 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./slices/index.js";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import { io } from "socket.io-client";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./locales/i18n";
-import { socket } from "./socket";
-import { SocketContext } from "./contexts/SocketContext";
 import AuthContext from "./contexts/authContext";
 import { Provider as RollProvider } from "@rollbar/react";
 
 // same configuration you would create for the Rollbar.js SDK
+
 const rollbarConfig = {
-  accessToken: "POST_CLIENT_ITEM_ACCESS_TOKEN",
-  environment: "production",
+  accessToken: "bb77e2024b5c4653b722485fd00c52a3",
+  environment: "testenv",
 };
 
 // export const socket = io();
