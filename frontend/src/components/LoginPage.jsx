@@ -1,29 +1,29 @@
-import axios from "axios";
-import React, { useState, useRef } from "react";
-import { useFormik } from "formik";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import loginSchema from "../schemas/login.js";
-import useFocus from "../hooks/useFocus.jsx";
+import axios from 'axios';
+import React, { useState, useRef } from 'react';
+import { useFormik } from 'formik';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import loginSchema from '../schemas/login.js';
+import useFocus from '../hooks/useFocus.jsx';
 
-import routes from "../contexts/routes.js";
-import useAuth from "../hooks/useAuth.jsx";
+import routes from '../contexts/routes.js';
+import useAuth from '../hooks/useAuth.jsx';
 import {
   Form,
   FormControl,
   FormGroup,
   FormLabel,
   Button,
-} from "react-bootstrap";
-import getNotifications from "../toast/toast.js";
+} from 'react-bootstrap';
+import getNotifications from '../toast/toast.js';
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const location = useLocation();
 
   // const [errors, writeError] = useState([]);
-  const tok = localStorage.getItem("userId") ?? null;
-  console.log("token from locstorage must be undef", tok);
+  const tok = localStorage.getItem('userId') ?? null;
+  console.log('token from locstorage must be undef', tok);
 
   const { t } = useTranslation();
 
@@ -31,19 +31,19 @@ const LoginPage = () => {
   useFocus(inputRef);
   const navigate = useNavigate();
   const auth = useAuth();
-  console.log("auth in login", auth);
+  console.log('auth in login', auth);
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     validationSchema: loginSchema,
 
     onSubmit: async ({ username, password }) => {
       setAuthFailed(false);
 
-      console.log("onsubmit", username, password);
+      console.log('onsubmit', username, password);
 
       try {
         const { data } = await axios.post(routes.loginPath(), {
@@ -51,28 +51,28 @@ const LoginPage = () => {
           password,
         });
         // const { token } = res.data;
-        console.log("data in success response", data);
+        console.log('data in success response', data);
         const tokenStr = JSON.stringify(data);
 
-        localStorage.setItem("userId", tokenStr);
+        localStorage.setItem('userId', tokenStr);
         auth.logIn();
         auth.setUser(data);
 
-        const { from } = location.state || { from: { pathname: "/" } };
+        const { from } = location.state || { from: { pathname: '/' } };
         navigate(from);
       } catch (e) {
         formik.setSubmitting(false);
-        console.log("erros response data", e.response.data);
+        console.log('erros response data', e.response.data);
 
-        if (e.code === "ERR_NETWORK") {
-          console.log("net fail in App");
+        if (e.code === 'ERR_NETWORK') {
+          console.log('net fail in App');
           getNotifications.netFail();
           return;
         } else if (e.response.status === 401) {
           setAuthFailed(true);
 
           inputRef.current.select();
-          console.log("error response", e.response);
+          console.log('error response', e.response);
           return;
         }
 
@@ -92,14 +92,14 @@ const LoginPage = () => {
                 <Form onSubmit={formik.handleSubmit}>
                   <fieldset disabled={formik.isSubmitting}>
                     <FormGroup className="mb-3" controlId="username">
-                      <FormLabel>{t("login.form.nick")}</FormLabel>
+                      <FormLabel>{t('login.form.nick')}</FormLabel>
                       <FormControl
                         onChange={formik.handleChange}
                         ref={inputRef}
                         value={formik.values.username}
                         type="username"
                         isInvalid={authFailed}
-                        placeholder={t("login.form.nick")}
+                        placeholder={t('login.form.nick')}
                         required
                       />
                       <Form.Text className="text-danger">
@@ -112,13 +112,13 @@ const LoginPage = () => {
                     </FormGroup>
 
                     <FormGroup className="mb-3" controlId="password">
-                      <FormLabel>{t("login.form.password")}</FormLabel>
+                      <FormLabel>{t('login.form.password')}</FormLabel>
                       <FormControl
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         isInvalid={authFailed}
                         type="password"
-                        placeholder={t("login.form.password")}
+                        placeholder={t('login.form.password')}
                         required
                       />
 
@@ -131,7 +131,7 @@ const LoginPage = () => {
                       </Form.Text>
 
                       <Form.Control.Feedback type="invalid">
-                        {t("err.login")}
+                        {t('err.login')}
                       </Form.Control.Feedback>
                     </FormGroup>
                     <Button
@@ -139,7 +139,7 @@ const LoginPage = () => {
                       className="w-100 mb-3"
                       type="submit"
                     >
-                      {t("login.header")}
+                      {t('login.header')}
                     </Button>
                   </fieldset>
                 </Form>
@@ -150,9 +150,9 @@ const LoginPage = () => {
       </div>
       <div class="card-footer p-4">
         <div class="text-center">
-          <span>{t("footer.quest")}</span>{" "}
+          <span>{t('footer.quest')}</span>{' '}
           <Link as={Link} to="/signup">
-            {t("footer.signup")}
+            {t('footer.signup')}
           </Link>
         </div>
       </div>

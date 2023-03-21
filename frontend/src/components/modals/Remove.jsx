@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 // import _ from "lodash";
-import { useDispatch } from "react-redux";
-import { Modal, Button, Form } from "react-bootstrap";
-import { actions as channelsActions } from "../../slices/channelsSlice.js";
-import { useTranslation } from "react-i18next";
-import socket from "../../socket";
-import getNotifications from "../../toast/toast.js";
+import { useDispatch } from 'react-redux';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { actions as channelsActions } from '../../slices/channelsSlice.js';
+import { useTranslation } from 'react-i18next';
+import socket from '../../socket';
+import getNotifications from '../../toast/toast.js';
 
 const Remove = (props) => {
   const { onHide, setCurrentChannel, modalInfo } = props;
@@ -14,16 +14,16 @@ const Remove = (props) => {
   const dispatch = useDispatch();
   //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
-  const [submitError, setError] = useState("");
+  const [submitError, setError] = useState('');
   // const socket = useContext(SocketContext);
 
   const handleSubmit = () => {
     setDisabled(true);
 
-    socket.emit("removeChannel", { id: modalInfo.id }, (acknowledge) => {
-      if (acknowledge.status === "ok") {
+    socket.emit('removeChannel', { id: modalInfo.id }, (acknowledge) => {
+      if (acknowledge.status === 'ok') {
         setDisabled(false);
-        console.log("channelsActions", channelsActions);
+        console.log('channelsActions', channelsActions);
         dispatch(channelsActions.removeChannel(modalInfo.id));
         setCurrentChannel(1);
         onHide();
@@ -34,7 +34,7 @@ const Remove = (props) => {
       //     getNotifications.netFail();
       //   }
       else {
-        setError(t("err.backErr"));
+        setError(t('err.backErr'));
         setDisabled(false);
       }
     });
@@ -43,14 +43,14 @@ const Remove = (props) => {
   return (
     <Modal show>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t("chanActions.rmv")}</Modal.Title>
+        <Modal.Title>{t('chanActions.rmv')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        {t("chanActions.rmvConf")}
+        {t('chanActions.rmvConf')}
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>
-            {t("btns.cancel")}
+            {t('btns.cancel')}
           </Button>
           <Form onClick={handleSubmit}>
             <Button
@@ -59,8 +59,8 @@ const Remove = (props) => {
               variant="danger"
               disabled={submitDisabled}
             >
-              {" "}
-              {t("btns.rmv")}{" "}
+              {' '}
+              {t('btns.rmv')}{' '}
             </Button>
           </Form>
 

@@ -1,17 +1,17 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react';
 // import _ from "lodash";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Modal, FormGroup, FormControl, Form, Button } from "react-bootstrap";
-import { actions as channelsActions } from "../../slices/channelsSlice.js";
-import { useTranslation } from "react-i18next";
-import getSchema from "../../schemas/add";
-import useSelect from "../../hooks/useSelect.jsx";
-import { selectors } from "../../slices/channelsSlice.js";
-import socket from "../../socket";
-import getNotifications from "../../toast/toast.js";
-import * as filter from "leo-profanity";
-import getDictionary from "../../leoprofanity/dictionary.js";
+import { Modal, FormGroup, FormControl, Form, Button } from 'react-bootstrap';
+import { actions as channelsActions } from '../../slices/channelsSlice.js';
+import { useTranslation } from 'react-i18next';
+import getSchema from '../../schemas/add';
+import useSelect from '../../hooks/useSelect.jsx';
+import { selectors } from '../../slices/channelsSlice.js';
+import socket from '../../socket';
+import getNotifications from '../../toast/toast.js';
+import * as filter from 'leo-profanity';
+import getDictionary from '../../leoprofanity/dictionary.js';
 
 const Rename = (props) => {
   getDictionary();
@@ -20,7 +20,7 @@ const Rename = (props) => {
   const dispatch = useDispatch();
   //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
-  const [submitError, setError] = useState("");
+  const [submitError, setError] = useState('');
 
   const channels = useSelector(selectors.selectAll);
   const currChatData = useSelector((state) =>
@@ -37,7 +37,7 @@ const Rename = (props) => {
 
   const handleChange = (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setInputValue(e.target.value);
   };
 
@@ -55,10 +55,10 @@ const Rename = (props) => {
     }
 
     socket.emit(
-      "renameChannel",
+      'renameChannel',
       { id: currChat, name: filter.clean(inputValue) },
       (acknowledge) => {
-        if (acknowledge.status === "ok") {
+        if (acknowledge.status === 'ok') {
           setDisabled(false);
           dispatch(
             channelsActions.renameChannel({
@@ -66,7 +66,7 @@ const Rename = (props) => {
               name: filter.clean(inputValue),
             })
           );
-          setInputValue("");
+          setInputValue('');
           onHide();
           getNotifications.renamed();
         }
@@ -75,7 +75,7 @@ const Rename = (props) => {
         //   if (e.code === "ERR_NETWORK") {
         //     getNotifications.netFail();
         //   }
-        setError(t("err.backErr"));
+        setError(t('err.backErr'));
         setDisabled(false);
       }
     );
@@ -93,7 +93,7 @@ const Rename = (props) => {
   return (
     <Modal show>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t("chanActions.add")}</Modal.Title>
+        <Modal.Title>{t('chanActions.add')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -117,7 +117,7 @@ const Rename = (props) => {
 
           <Modal.Footer>
             <Button variant="secondary" onClick={onHide}>
-              {t("btns.cancel")}
+              {t('btns.cancel')}
             </Button>
             <Button
               type="submit"
@@ -125,7 +125,7 @@ const Rename = (props) => {
               variant="primary"
               disabled={submitDisabled}
             >
-              {t("btns.sbmt")}
+              {t('btns.sbmt')}
             </Button>
           </Modal.Footer>
         </Form>

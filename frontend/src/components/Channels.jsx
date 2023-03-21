@@ -1,18 +1,18 @@
-import React, { useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
 // import { useSelector, useDispatch } from "react-redux";
 
-import cn from "classnames";
-import getModal from "./modals/index.js";
+import cn from 'classnames';
+import getModal from './modals/index.js';
 // import socket from '../../../App';
 
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import useAuth from "../hooks/useAuth.jsx";
-import { selectors } from "../slices/channelsSlice.js";
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import useAuth from '../hooks/useAuth.jsx';
+import { selectors } from '../slices/channelsSlice.js';
 
-import Dropdown from "react-bootstrap/Dropdown";
-import { useTranslation } from "react-i18next";
+import Dropdown from 'react-bootstrap/Dropdown';
+import { useTranslation } from 'react-i18next';
 
 const Channels = ({ setCurrentChannel, state }) => {
   // const [channelsOnPage, setChannels] = useState(null);
@@ -23,7 +23,7 @@ const Channels = ({ setCurrentChannel, state }) => {
   // const { username } = auth.currentUser;
 
   const channels = useSelector(selectors.selectAll);
-  console.log("channels in comp", channels);
+  console.log('channels in comp', channels);
 
   const [modalInfo, setModalInfo] = useState({ type: null, id: null });
 
@@ -56,13 +56,13 @@ const Channels = ({ setCurrentChannel, state }) => {
     <>
       <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
         <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-          <b>{t("headerChan")}</b>
+          <b>{t('headerChan')}</b>
 
           <Button
             className="glowing-border"
             ref={btnRef}
             variant="outline-primary"
-            onClick={() => showModal("addChat")}
+            onClick={() => showModal('addChat')}
           >
             +
           </Button>
@@ -72,8 +72,8 @@ const Channels = ({ setCurrentChannel, state }) => {
           className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
         >
           {channels.map(({ name, id, removable }) => {
-            const bntClasses = cn("w-100 rounded-0 text-start btn", {
-              "btn-secondary": state === id,
+            const bntClasses = cn('w-100 rounded-0 text-start btn', {
+              'btn-secondary': state === id,
             });
             const dropDwnVar = cn({
               secondary: state === id,
@@ -99,16 +99,16 @@ const Channels = ({ setCurrentChannel, state }) => {
                   <Dropdown.Menu>
                     <Dropdown.Item
                       id={id}
-                      onClick={() => showModal("removeChat", id)}
+                      onClick={() => showModal('removeChat', id)}
                     >
-                      {t("dropDwn.rmv")}
+                      {t('dropDwn.rmv')}
                     </Dropdown.Item>
                     <Dropdown.Item
                       id={id}
-                      onClick={() => showModal("renameChat", id)}
+                      onClick={() => showModal('renameChat', id)}
                     >
-                      {t("dropDwn.rnm")}
-                    </Dropdown.Item>{" "}
+                      {t('dropDwn.rnm')}
+                    </Dropdown.Item>{' '}
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
@@ -125,7 +125,7 @@ const Channels = ({ setCurrentChannel, state }) => {
                 </button>
               </li>
             );
-          })}{" "}
+          })}{' '}
           {renderModal({ modalInfo, hideModal })}
         </ul>
       </div>

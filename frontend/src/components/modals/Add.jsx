@@ -1,16 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef } from 'react';
 // import _ from "lodash";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Modal, FormGroup, FormControl, Form, Button } from "react-bootstrap";
-import { actions as channelsActions } from "../../slices/channelsSlice.js";
-import { useTranslation } from "react-i18next";
-import useFocus from "../../hooks/useFocus.jsx";
-import getSchema from "../../schemas/add.js";
-import socket from "../../socket";
-import getNotifications from "../../toast/toast.js";
-import * as filter from "leo-profanity";
-import getDictionary from "../../leoprofanity/dictionary.js";
+import { Modal, FormGroup, FormControl, Form, Button } from 'react-bootstrap';
+import { actions as channelsActions } from '../../slices/channelsSlice.js';
+import { useTranslation } from 'react-i18next';
+import useFocus from '../../hooks/useFocus.jsx';
+import getSchema from '../../schemas/add.js';
+import socket from '../../socket';
+import getNotifications from '../../toast/toast.js';
+import * as filter from 'leo-profanity';
+import getDictionary from '../../leoprofanity/dictionary.js';
 
 const Add = (props) => {
   getDictionary();
@@ -19,8 +19,8 @@ const Add = (props) => {
   const dispatch = useDispatch();
   //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
-  const [submitError, setError] = useState("");
-  const [inputValue, setInputValue] = useState("");
+  const [submitError, setError] = useState('');
+  const [inputValue, setInputValue] = useState('');
   // const socket = useContext(SocketContext);
   // console.log("socket in Add", socket);
 
@@ -31,7 +31,7 @@ const Add = (props) => {
   const schema = getSchema(chanNames);
 
   const handleChange = (e) => {
-    setError("");
+    setError('');
     setInputValue(e.target.value);
   };
 
@@ -48,13 +48,13 @@ const Add = (props) => {
     }
 
     socket.emit(
-      "newChannel",
+      'newChannel',
       { name: filter.clean(inputValue) },
       (acknowledge) => {
-        if (acknowledge.status === "ok") {
+        if (acknowledge.status === 'ok') {
           setDisabled(false);
           dispatch(channelsActions.addChannel(acknowledge.data));
-          setInputValue("");
+          setInputValue('');
           setCurrentChannel(acknowledge.data.id);
           onHide();
           getNotifications.added();
@@ -75,7 +75,7 @@ const Add = (props) => {
   return (
     <Modal show>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t("chanActions.add")}</Modal.Title>
+        <Modal.Title>{t('chanActions.add')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -99,7 +99,7 @@ const Add = (props) => {
 
           <Modal.Footer>
             <Button variant="secondary" onClick={onHide}>
-              {t("btns.cancel")}
+              {t('btns.cancel')}
             </Button>
             <Button
               type="submit"
@@ -107,7 +107,7 @@ const Add = (props) => {
               variant="primary"
               disabled={submitDisabled}
             >
-              {t("btns.sbmt")}
+              {t('btns.sbmt')}
             </Button>
           </Modal.Footer>
         </Form>

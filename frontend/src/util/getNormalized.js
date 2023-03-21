@@ -1,13 +1,13 @@
-import { normalize, schema } from "normalizr";
+import { normalize, schema } from 'normalizr';
 
 const getNormalized = (data) => {
-  const user = new schema.Entity("users");
+  const user = new schema.Entity('users');
 
-  const message = new schema.Entity("messages", {
+  const message = new schema.Entity('messages', {
     author: user,
   });
 
-  const channel = new schema.Entity("channels", {
+  const channel = new schema.Entity('channels', {
     author: user,
     messages: [message],
   });

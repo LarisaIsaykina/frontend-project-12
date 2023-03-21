@@ -1,5 +1,5 @@
-import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { actions as channelsActions } from "./channelsSlice.js";
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { actions as channelsActions } from './channelsSlice.js';
 
 // import { normalize, schema } from 'normalizr';
 
@@ -17,7 +17,7 @@ const messagesAdapter = createEntityAdapter();
 const initState = messagesAdapter.getInitialState();
 
 const messagesSlice = createSlice({
-  name: "messages",
+  name: 'messages',
   initialState: initState,
   reducers: {
     addMessage: messagesAdapter.addOne,

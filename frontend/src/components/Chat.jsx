@@ -1,17 +1,17 @@
-import React, { useState, useRef } from "react";
-import { useSelector } from "react-redux";
-import useFocus from "../hooks/useFocus.jsx";
+import React, { useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import useFocus from '../hooks/useFocus.jsx';
 
 // import { selectors as messagesSelectors } from "../slices/messagesSlice.js";
 
 // import { fetchMessages } from "../slices/messagesSlice.js";
 // import { SocketContext } from "../contexts/SocketContext.jsx";
-import useAuth from "../hooks/useAuth.jsx";
-import socket from "../socket";
-import { selectors } from "../slices/channelsSlice.js";
-import * as filter from "leo-profanity";
-import getDictionary from "../leoprofanity/dictionary.js";
-import { useTranslation } from "react-i18next";
+import useAuth from '../hooks/useAuth.jsx';
+import socket from '../socket';
+import { selectors } from '../slices/channelsSlice.js';
+import * as filter from 'leo-profanity';
+import getDictionary from '../leoprofanity/dictionary.js';
+import { useTranslation } from 'react-i18next';
 
 const Chat = ({ currentChat }) => {
   const { t } = useTranslation();
@@ -20,11 +20,11 @@ const Chat = ({ currentChat }) => {
   // const socket = useContext(SocketContext);
   const auth = useAuth();
   const { username } = auth.currentUser;
-  console.log("auth.currentuser", auth.currentUser);
+  console.log('auth.currentuser', auth.currentUser);
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [submitDisabled, setDisabled] = useState(false);
-  const [submitError, setError] = useState("");
+  const [submitError, setError] = useState('');
   // const [isConnected, setIsConnected] = useState(socket.connected);
 
   // const dispatch = useDispatch();
@@ -32,17 +32,17 @@ const Chat = ({ currentChat }) => {
   const inputRef = useRef();
 
   const currChannelData = useSelector((s) => {
-    console.log("chat id now", currentChat);
+    console.log('chat id now', currentChat);
     return selectors.selectById(s, currentChat);
   });
-  console.log("curr channel data must be {...}", currChannelData);
-  console.log("selectors / channel", selectors);
+  console.log('curr channel data must be {...}', currChannelData);
+  console.log('selectors / channel', selectors);
 
   // const messages = useSelector((s) => selectByChannel(s, currentChat));
 
   const messages = useSelector((state) => {
     const all = Object.values(state.messages.entities);
-    console.log("all", all);
+    console.log('all', all);
     if (all.length !== 0) {
       return all.filter((i) => i.channelId === currentChat);
     }
@@ -64,19 +64,19 @@ const Chat = ({ currentChat }) => {
     }
 
     socket.emit(
-      "newMessage",
+      'newMessage',
       { body: filtered, channelId: currentChat, username },
       (response) => {
-        if (response.status === "ok") {
+        if (response.status === 'ok') {
           setDisabled(false);
-          console.log("response", response);
+          console.log('response', response);
           // dispatch(messagesActions.addMessage(message)); // ?
           // dispatch(fetchMessages());
 
-          setMessage("");
-          setError("");
+          setMessage('');
+          setError('');
         } else {
-          setError("submit failed");
+          setError('submit failed');
         }
       }
     );
@@ -95,7 +95,7 @@ const Chat = ({ currentChat }) => {
             {currChannelData && <b># {currChannelData.name}</b>}
           </p>
           <span className="text-muted">
-            {t("messages", { count: messages.length })}
+            {t('messages', { count: messages.length })}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
@@ -122,7 +122,7 @@ const Chat = ({ currentChat }) => {
                 className="border-0 p-0 ps-2 form-control"
                 value={message}
                 disabled={submitDisabled}
-              ></input>{" "}
+              ></input>{' '}
               <button
                 type="submit"
                 value="Submit"
@@ -141,7 +141,7 @@ const Chat = ({ currentChat }) => {
                     d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
                   ></path>
                 </svg>
-                <span className="visually-hidden">{t("btns.sbmt")}</span>
+                <span className="visually-hidden">{t('btns.sbmt')}</span>
               </button>
             </div>
             {submitError && (

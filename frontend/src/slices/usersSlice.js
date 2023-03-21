@@ -1,9 +1,9 @@
-import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 
 const usersAdapter = createEntityAdapter();
 
 const usersSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState: usersAdapter.getInitialState(),
 
   reducers: {

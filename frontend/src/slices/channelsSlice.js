@@ -1,4 +1,4 @@
-import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 
 // export const fetchChannels = createAsyncThunk("channels/fetch", async () => {
 //   const response = await axios.get(routes.dataPath(), {
@@ -14,7 +14,7 @@ import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 
 const channelsAdapter = createEntityAdapter();
 const channelsSlice = createSlice({
-  name: "channels",
+  name: 'channels',
   initialState: channelsAdapter.getInitialState(),
   reducers: {
     addChannel: channelsAdapter.addOne,

@@ -1,20 +1,20 @@
-import { useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import useFocus from "../hooks/useFocus.jsx";
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import useFocus from '../hooks/useFocus.jsx';
 
-import axios from "axios";
-import React, { useState, useRef } from "react";
-import { useFormik } from "formik";
-import routes from "../contexts/routes.js";
-import useAuth from "../hooks/useAuth.jsx";
-import { Form } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import signupSchema from "../schemas/signup.js";
-import getNotifications from "../toast/toast.js";
+import axios from 'axios';
+import React, { useState, useRef } from 'react';
+import { useFormik } from 'formik';
+import routes from '../contexts/routes.js';
+import useAuth from '../hooks/useAuth.jsx';
+import { Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import signupSchema from '../schemas/signup.js';
+import getNotifications from '../toast/toast.js';
 
 const SignupPage = () => {
   const [submitDisabled, setSubmitDisabled] = useState(false);
-  const [signupError, setSignupError] = useState("");
+  const [signupError, setSignupError] = useState('');
   const { t } = useTranslation();
 
   const inputRef = useRef();
@@ -24,18 +24,18 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  console.log("!!SignupPage auth", auth);
+  console.log('!!SignupPage auth', auth);
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
-      confirmPassword: "",
+      username: '',
+      password: '',
+      confirmPassword: '',
     },
     validationSchema: signupSchema,
 
     onSubmit: async ({ username, password }) => {
-      setSignupError("");
+      setSignupError('');
 
       setSubmitDisabled(true);
 
@@ -45,25 +45,25 @@ const SignupPage = () => {
           password,
         });
         // dispatch(usersActions.addUser(res.data));
-        console.log("result when signup must be token + name", res);
+        console.log('result when signup must be token + name', res);
 
         // storing input name: "Johname
         const tokenStr = JSON.stringify(res.data);
-        localStorage.setItem("userId", tokenStr);
+        localStorage.setItem('userId', tokenStr);
         auth.logIn();
         auth.setUser(res.data);
         // const { from } = location.state ?? { from: { pathname: '/' } }; // если location.state === null
-        navigate("/");
+        navigate('/');
       } catch (e) {
         formik.setSubmitting(false);
         setSubmitDisabled(false);
-        console.log("error in Sugnup", e);
-        if (e.code === "ERR_NETWORK") {
-          console.log("net fail in App");
+        console.log('error in Sugnup', e);
+        if (e.code === 'ERR_NETWORK') {
+          console.log('net fail in App');
           getNotifications.netFail();
         } else if (e.response.status === 409) {
           inputRef.current.select();
-          setSignupError(t("err.signup"));
+          setSignupError(t('err.signup'));
 
           return;
         } else {
@@ -86,18 +86,18 @@ const SignupPage = () => {
                 alt="Войти"
               ></img>
             </div>
-            <h1>{t("signup.header")}</h1>
+            <h1>{t('signup.header')}</h1>
             <Form noValidate onSubmit={formik.handleSubmit}>
               <Form.Group
                 md="3"
                 controlId="username"
                 className="position-relative"
               >
-                <Form.Label>{t("signup.form.name")}</Form.Label>
+                <Form.Label>{t('signup.form.name')}</Form.Label>
                 <Form.Control
                   ref={inputRef}
                   type="text"
-                  placeholder={t("signup.form.placeHld2")}
+                  placeholder={t('signup.form.placeHld2')}
                   name="username"
                   value={formik.values.username}
                   onChange={formik.handleChange}
@@ -117,10 +117,10 @@ const SignupPage = () => {
                 controlId="password"
                 className="position-relative"
               >
-                <Form.Label>{t("signup.form.password")}</Form.Label>
+                <Form.Label>{t('signup.form.password')}</Form.Label>
                 <Form.Control
                   type="password"
-                  placeholder={t("signup.form.placeHld")}
+                  placeholder={t('signup.form.placeHld')}
                   name="password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
@@ -140,10 +140,10 @@ const SignupPage = () => {
                 controlId="confirmPassword"
                 className="position-relative"
               >
-                <Form.Label>{t("signup.form.confirm")}</Form.Label>
+                <Form.Label>{t('signup.form.confirm')}</Form.Label>
                 <Form.Control
                   type="password"
-                  placeholder={t("signup.form.placeHld")}
+                  placeholder={t('signup.form.placeHld')}
                   name="confirmPassword"
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
@@ -160,7 +160,7 @@ const SignupPage = () => {
               </Form.Group>
 
               <Button disabled={submitDisabled} type="submit">
-                {t("signup.form.sbmt")}
+                {t('signup.form.sbmt')}
               </Button>
             </Form>
           </div>

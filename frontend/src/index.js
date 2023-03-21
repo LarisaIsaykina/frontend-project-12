@@ -1,18 +1,17 @@
-import React from "react";
+import React, { useState } from 'react';
 
-import { Provider } from "react-redux";
+import { Provider } from 'react-redux';
 
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import store from "./slices/index.js";
-import { useState } from "react";
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import store from './slices/index.js';
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import { I18nextProvider } from "react-i18next";
-import i18n from "./locales/i18n";
-import AuthContext from "./contexts/authContext";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './locales/i18n';
+import AuthContext from './contexts/authContext';
 // import { Provider as RollProvider, ErrorBoundary } from "@rollbar/react";
 
 // same configuration you would create for the Rollbar.js SDK
@@ -24,7 +23,7 @@ import AuthContext from "./contexts/authContext";
 
 // export const socket = io();
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -37,7 +36,7 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(true);
   };
   const logOut = () => {
-    localStorage.removeItem("userId");
+    localStorage.removeItem('userId');
     setLoggedIn(false);
     setCurrentUser(null);
   };
@@ -50,11 +49,11 @@ const AuthProvider = ({ children }) => {
     setUser,
     clearUser,
   };
-  console.log("props when passing to context", props);
+  console.log('props when passing to context', props);
   return (
     // <SocketContext.Provider value={socket}>
     <AuthContext.Provider value={props}>{children}</AuthContext.Provider>
-    //{" "}
+    // {" "}
     // </SocketContext.Provider>
   );
 };

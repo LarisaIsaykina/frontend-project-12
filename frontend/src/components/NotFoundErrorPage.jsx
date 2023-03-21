@@ -1,6 +1,6 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import useAuth from "../hooks/useAuth";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import useAuth from '../hooks/useAuth';
 
 const NotFoundErrorPage = () => {
   // const error = useRouteError();
@@ -20,9 +20,9 @@ const NotFoundErrorPage = () => {
   const { t } = useTranslation();
   return (
     <>
-      <title>{t("404")}</title>
+      <title>{t('404')}</title>
       <div>
-        <header4>{t("404")}</header4>
+        <header4>{t('404')}</header4>
       </div>
     </>
   );
