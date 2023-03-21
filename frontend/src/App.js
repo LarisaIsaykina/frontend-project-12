@@ -40,14 +40,18 @@ const AuthButton = () => {
     return null;
   }
   if (loadingState === 'error') {
-    <Button as={Link} to="/login">
-      {t('btns.login')}
-    </Button>;
+    return (
+      <Button as={Link} to="/login">
+        {t('btns.login')}
+      </Button>
+    );
   }
   if (loadingState === 'fullfilled' && !auth.loggedIn) {
-    <Button as={Link} to="/login">
-      {t('btns.login')}
-    </Button>;
+    return (
+      <Button as={Link} to="/login">
+        {t('btns.login')}
+      </Button>
+    );
   }
   if (loadingState === 'fullfilled' || auth.loggedIn) {
     return <Button onClick={auth.logOut}>{t('btns.logout')}</Button>;
