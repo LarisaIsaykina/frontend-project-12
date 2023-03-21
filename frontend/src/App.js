@@ -60,24 +60,24 @@ const AuthButton = () => {
 };
 
 const PrivateRoute = ({ children }) => {
-  console.log('private');
+  // console.log('private');
 
   const navigate = useNavigate();
   const auth = useAuth();
   const { loggedIn } = auth;
 
   const loadingState = useToken(loggedIn);
-  console.log('!!loading state', loadingState);
+  // console.log('!!loading state', loadingState);
   if (loadingState === 'pending') {
     return 'LOADING';
   }
   if (loadingState === 'error') {
     navigate('/login');
-    return;
+    return null;
   }
   if (loadingState === 'fullfilled' && !auth.loggedIn) {
     navigate('/login');
-    return;
+    return null;
   }
   if (loadingState === 'fullfilled' || auth.loggedIn) {
     return children;

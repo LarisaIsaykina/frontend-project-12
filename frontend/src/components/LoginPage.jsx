@@ -22,8 +22,8 @@ const LoginPage = () => {
   const location = useLocation();
 
   // const [errors, writeError] = useState([]);
-  const tok = localStorage.getItem('userId') ?? null;
-  console.log('token from locstorage must be undef', tok);
+  // const tok = localStorage.getItem('userId') ?? null;
+  // console.log('token from locstorage must be undef', tok);
 
   const { t } = useTranslation();
 
@@ -31,7 +31,7 @@ const LoginPage = () => {
   useFocus(inputRef);
   const navigate = useNavigate();
   const auth = useAuth();
-  console.log('auth in login', auth);
+  // console.log('auth in login', auth);
 
   const formik = useFormik({
     initialValues: {
@@ -43,7 +43,7 @@ const LoginPage = () => {
     onSubmit: async ({ username, password }) => {
       setAuthFailed(false);
 
-      console.log('onsubmit', username, password);
+      // console.log('onsubmit', username, password);
 
       try {
         const { data } = await axios.post(routes.loginPath(), {
@@ -51,7 +51,7 @@ const LoginPage = () => {
           password,
         });
         // const { token } = res.data;
-        console.log('data in success response', data);
+        // console.log('data in success response', data);
         const tokenStr = JSON.stringify(data);
 
         localStorage.setItem('userId', tokenStr);
@@ -62,17 +62,17 @@ const LoginPage = () => {
         navigate(from);
       } catch (e) {
         formik.setSubmitting(false);
-        console.log('erros response data', e.response.data);
+        // console.log('erros response data', e.response.data);
 
         if (e.code === 'ERR_NETWORK') {
-          console.log('net fail in App');
+          // console.log('net fail in App');
           getNotifications.netFail();
           return;
         } else if (e.response.status === 401) {
           setAuthFailed(true);
 
           inputRef.current.select();
-          console.log('error response', e.response);
+          // console.log('error response', e.response);
           return;
         }
 

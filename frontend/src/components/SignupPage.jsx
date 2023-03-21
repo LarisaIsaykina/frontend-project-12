@@ -24,7 +24,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  console.log('!!SignupPage auth', auth);
+  // console.log('!!SignupPage auth', auth);
 
   const formik = useFormik({
     initialValues: {
@@ -45,7 +45,7 @@ const SignupPage = () => {
           password,
         });
         // dispatch(usersActions.addUser(res.data));
-        console.log('result when signup must be token + name', res);
+        // console.log('result when signup must be token + name', res);
 
         // storing input name: "Johname
         const tokenStr = JSON.stringify(res.data);
@@ -57,9 +57,9 @@ const SignupPage = () => {
       } catch (e) {
         formik.setSubmitting(false);
         setSubmitDisabled(false);
-        console.log('error in Sugnup', e);
+        // console.log('error in Sugnup', e);
         if (e.code === 'ERR_NETWORK') {
-          console.log('net fail in App');
+          // console.log('net fail in App');
           getNotifications.netFail();
         } else if (e.response.status === 409) {
           inputRef.current.select();

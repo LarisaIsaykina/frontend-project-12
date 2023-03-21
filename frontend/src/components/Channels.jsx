@@ -23,7 +23,6 @@ const Channels = ({ setCurrentChannel, state }) => {
   // const { username } = auth.currentUser;
 
   const channels = useSelector(selectors.selectAll);
-  console.log('channels in comp', channels);
 
   const [modalInfo, setModalInfo] = useState({ type: null, id: null });
 

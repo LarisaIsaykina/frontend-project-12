@@ -20,7 +20,6 @@ const Chat = ({ currentChat }) => {
   // const socket = useContext(SocketContext);
   const auth = useAuth();
   const { username } = auth.currentUser;
-  console.log('auth.currentuser', auth.currentUser);
 
   const [message, setMessage] = useState('');
   const [submitDisabled, setDisabled] = useState(false);
@@ -32,17 +31,16 @@ const Chat = ({ currentChat }) => {
   const inputRef = useRef();
 
   const currChannelData = useSelector((s) => {
-    console.log('chat id now', currentChat);
     return selectors.selectById(s, currentChat);
   });
-  console.log('curr channel data must be {...}', currChannelData);
-  console.log('selectors / channel', selectors);
+  // console.log('curr channel data must be {...}', currChannelData);
+  // console.log('selectors / channel', selectors);
 
   // const messages = useSelector((s) => selectByChannel(s, currentChat));
 
   const messages = useSelector((state) => {
     const all = Object.values(state.messages.entities);
-    console.log('all', all);
+    // console.log('all', all);
     if (all.length !== 0) {
       return all.filter((i) => i.channelId === currentChat);
     }
@@ -69,7 +67,7 @@ const Chat = ({ currentChat }) => {
       (response) => {
         if (response.status === 'ok') {
           setDisabled(false);
-          console.log('response', response);
+          // console.log('response', response);
           // dispatch(messagesActions.addMessage(message)); // ?
           // dispatch(fetchMessages());
 

@@ -8,11 +8,11 @@ const useToken = (dependency) => {
   const auth = useAuth();
 
   const [loading, setLoading] = useState('pending');
-  console.log('usetoken inside');
+  // console.log('usetoken inside');
 
   useEffect(() => {
     const token = localStorage.getItem('userId');
-    console.log('!! token in useToke useEffect', token);
+    // console.log('!! token in useToke useEffect', token);
     if (token) {
       const parsed = JSON.parse(token);
       auth.setUser(parsed);
@@ -25,8 +25,8 @@ const useToken = (dependency) => {
     }
   }, [dependency]);
 
-  console.log('before return loading state');
-  console.log('loading before its return', loading);
+  // console.log('before return loading state');
+  // console.log('loading before its return', loading);
   return loading;
 };
 export default useToken;

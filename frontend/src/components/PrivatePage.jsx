@@ -1,4 +1,3 @@
-import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Channels from './Channels.jsx';
 import Chat from './Chat.jsx';
@@ -27,29 +26,29 @@ const PrivatePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const header = getAuthHeader();
-        console.log('AUTH header', header);
+        // const header = getAuthHeader();
+        // console.log('AUTH header', header);
         const { data } = await axios.get(routes.dataPath(), {
           headers: getAuthHeader(),
         });
-        console.log('data', data);
+        // console.log('data', data);
 
         const normalizedData = getNormalized(data);
-        console.log('normalizedData', JSON.stringify(normalizedData, null, 2));
+        // console.log('normalizedData', JSON.stringify(normalizedData, null, 2));
         const { channels } = normalizedData.entities;
         const messages = normalizedData.entities.messages ?? {};
-        console.log('users, chan , messag for dispatching', channels, messages);
-        console.log('!!!dispatch', dispatch);
+        // console.log('users, chan , messag for dispatching', channels, messages);
+        // console.log('!!!dispatch', dispatch);
 
         // dispatch(usersActions.addUsers(Object.values(users)));
         dispatch(channelsActions.addChannels(Object.values(channels)));
         dispatch(messagesActions.addMessages(Object.values(messages)));
       } catch (e) {
-        console.log('e error caught', e);
+        // console.log('e error caught', e);
 
         setError(e);
         if (e.code === 'ERR_NETWORK') {
-          console.log('net fail in App');
+          // console.log('net fail in App');
           getNotifications.netFail();
         }
         throw e;

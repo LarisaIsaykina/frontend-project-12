@@ -41,7 +41,6 @@ const Add = (props) => {
     try {
       await schema.validate(inputValue);
     } catch (e) {
-      console.log(e);
       setError(e.message);
       setDisabled(false);
       return;

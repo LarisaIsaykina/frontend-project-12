@@ -23,7 +23,6 @@ const Remove = (props) => {
     socket.emit('removeChannel', { id: modalInfo.id }, (acknowledge) => {
       if (acknowledge.status === 'ok') {
         setDisabled(false);
-        console.log('channelsActions', channelsActions);
         dispatch(channelsActions.removeChannel(modalInfo.id));
         setCurrentChannel(1);
         onHide();

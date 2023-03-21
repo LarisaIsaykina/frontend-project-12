@@ -49,7 +49,6 @@ const AuthProvider = ({ children }) => {
     setUser,
     clearUser,
   };
-  console.log('props when passing to context', props);
   return (
     // <SocketContext.Provider value={socket}>
     <AuthContext.Provider value={props}>{children}</AuthContext.Provider>
