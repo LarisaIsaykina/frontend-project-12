@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
-import { useBootstrapBreakpoints } from 'react-bootstrap/esm/ThemeProvider';
 import useAuth from './useAuth';
 // import { useNavigate, useLocation } from "react-router-dom";
 
 const useToken = (dependency) => {
   // const navigate = useNavigate();
   const auth = useAuth();
+  const token = localStorage.getItem('userId');
 
   const [loading, setLoading] = useState('pending');
-  // console.log('usetoken inside');
+  // const [isLoggedIn, setIsLoggedIn] = useState(dependency);
 
   useEffect(() => {
-    const token = localStorage.getItem('userId');
-    // console.log('!! token in useToke useEffect', token);
     if (token) {
       const parsed = JSON.parse(token);
       auth.setUser(parsed);
       auth.logIn(true);
-      // navigate("/");
+      // setIsLoggedIn(true);
 
       setLoading('fullfilled');
     } else {
+      // setIsLoggedIn(false);
+
       setLoading('error');
     }
   }, [dependency]);

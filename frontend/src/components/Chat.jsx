@@ -17,74 +17,68 @@ const Chat = ({ currentChat }) => {
   const { t } = useTranslation();
   getDictionary();
 
-  // const socket = useContext(SocketContext);
   const auth = useAuth();
-  const { username } = auth.currentUser;
+  const userData = auth.currentUser || null;
 
   const [message, setMessage] = useState('');
   const [submitDisabled, setDisabled] = useState(false);
   const [submitError, setError] = useState('');
-  // const [isConnected, setIsConnected] = useState(socket.connected);
-
-  // const dispatch = useDispatch();
 
   const inputRef = useRef();
+  useFocus(inputRef, currentChat);
 
   const currChannelData = useSelector((s) => {
     return selectors.selectById(s, currentChat);
   });
-  // console.log('curr channel data must be {...}', currChannelData);
-  // console.log('selectors / channel', selectors);
-
-  // const messages = useSelector((s) => selectByChannel(s, currentChat));
 
   const messages = useSelector((state) => {
-    const all = Object.values(state.messages.entities);
-    // console.log('all', all);
-    if (all.length !== 0) {
-      return all.filter((i) => i.channelId === currentChat);
+    const allMessages = Object.values(state.messages.entities);
+    if (allMessages) {
+      return allMessages.filter((i) => i.channelId === currentChat);
     }
     return [];
   });
 
-  useFocus(inputRef, currentChat);
-
   const handleChangeMessage = (e) => setMessage(e.target.value);
 
   const handleAddMessage = (e) => {
+    if (!message) {
+      return;
+    }
     setDisabled(true);
 
     e.preventDefault();
-    const filtered = filter.clean(message);
-
-    if (!filtered) {
-      return;
-    }
+    const censoredMessage = filter.clean(message);
 
     socket.emit(
       'newMessage',
-      { body: filtered, channelId: currentChat, username },
+      {
+        body: censoredMessage,
+        channelId: currentChat,
+        username: userData.username,
+      },
       (response) => {
         if (response.status === 'ok') {
           setDisabled(false);
-          // console.log('response', response);
-          // dispatch(messagesActions.addMessage(message)); // ?
-          // dispatch(fetchMessages());
 
           setMessage('');
           setError('');
         } else {
           setError('submit failed');
+          setDisabled(false);
         }
       }
     );
   };
 
+  if (!userData) {
+    return null;
+  }
+
   if (!currChannelData) {
     return null;
   }
 
-  // console.log('messages from store', messages);
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">

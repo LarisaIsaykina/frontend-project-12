@@ -16,14 +16,11 @@ import {
   Button,
 } from 'react-bootstrap';
 import getNotifications from '../toast/toast.js';
+import avatar from '../images/avatar_login.jpg';
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const location = useLocation();
-
-  // const [errors, writeError] = useState([]);
-  // const tok = localStorage.getItem('userId') ?? null;
-  // console.log('token from locstorage must be undef', tok);
 
   const { t } = useTranslation();
 
@@ -50,8 +47,7 @@ const LoginPage = () => {
           username,
           password,
         });
-        // const { token } = res.data;
-        // console.log('data in success response', data);
+
         const tokenStr = JSON.stringify(data);
 
         localStorage.setItem('userId', tokenStr);
@@ -62,17 +58,14 @@ const LoginPage = () => {
         navigate(from);
       } catch (e) {
         formik.setSubmitting(false);
-        // console.log('erros response data', e.response.data);
 
         if (e.code === 'ERR_NETWORK') {
-          // console.log('net fail in App');
           getNotifications.netFail();
           return;
         } else if (e.response.status === 401) {
           setAuthFailed(true);
 
           inputRef.current.select();
-          // console.log('error response', e.response);
           return;
         }
 
@@ -81,7 +74,6 @@ const LoginPage = () => {
     },
   });
 
-  // <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
   return (
     <>
       <div className="container-fluid h-100">
@@ -148,8 +140,8 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-      <div class="card-footer p-4">
-        <div class="text-center">
+      <div className="card-footer p-4">
+        <div className="text-center">
           <span>{t('footer.quest')}</span>{' '}
           <Link as={Link} to="/signup">
             {t('footer.signup')}
