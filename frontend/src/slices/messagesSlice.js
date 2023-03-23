@@ -47,7 +47,7 @@ const messagesSlice = createSlice({
       const channelId = action.payload;
       // Выбираем все комментарии кроме тех, что нужно удалить
       const restEntities = Object.values(state.entities).filter(
-        (e) => e.channelId !== channelId
+        (e) => e.channelId !== channelId,
       );
       // setAll удаляет текущие сущности и добавляет новые
       messagesAdapter.setAll(state, restEntities);
@@ -61,7 +61,7 @@ const messagesSlice = createSlice({
 export const { actions } = messagesSlice;
 
 export const selectors = messagesAdapter.getSelectors(
-  (state) => state.messages
+  (state) => state.messages,
 );
 
 export default messagesSlice.reducer;
