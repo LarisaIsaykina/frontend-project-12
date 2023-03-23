@@ -85,8 +85,7 @@ const Channels = ({ setCurrentChannel, state }) => {
                     className="text-truncate w-100 rounded-0 text-start"
                     variant={dropDwnVar}
                   >
-                      <span className="me-1">#</span>
-                      {name}
+                      # {name}
                   </Button>
 
                   <Dropdown.Toggle
