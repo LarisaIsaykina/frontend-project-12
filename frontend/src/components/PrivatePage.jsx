@@ -56,7 +56,7 @@ const PrivatePage = () => {
           </Nav.Link>
         </Nav>
       </Navbar> */}
-      <div className="row h-100 bg-white flex-md-row">
+      <div className="row h-100 bg-white flex-md-row overflow-hidden">
         {' '}
         <Channels
           state={currentChannel}

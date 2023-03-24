@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+
 }
 
 code {
@@ -21,3 +23,8 @@ code {
   border-color: #9ecaed;
   box-shadow: 0 0 10px #9ecaed;
 }
+
+/* .scroll-end {
+  scroll-snap-align: end;
+  scroll-snap-type: vertical;
+} */

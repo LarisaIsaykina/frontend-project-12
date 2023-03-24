@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 // import { useSelector, useDispatch } from "react-redux";
 
@@ -21,8 +21,17 @@ const Channels = ({ setCurrentChannel, state }) => {
   const btnRef = useRef(null);
   const auth = useAuth();
   // const { username } = auth.currentUser;
+  
+  //   if (scrollRef.current) {
+  //     scrollRef.current.scrollIntoView();
+  //   }
+
+  // }, []
 
   const channels = useSelector(selectors.selectAll);
+
+  const lastIndex = channels.length - 1;
+  console.log('last index', lastIndex);
 
   const [modalInfo, setModalInfo] = useState({ type: null, id: null });
 
@@ -31,6 +40,19 @@ const Channels = ({ setCurrentChannel, state }) => {
 
     setModalInfo({ type: null, id: null });
   };
+
+  const lastElRef = useRef();
+
+  const scrollToBottom = () => {
+    lastElRef.current.scrollIntoView();
+  };
+
+
+  useEffect(() => {
+    if (lastElRef.current) {
+      scrollToBottom();
+    }
+  }, [channels]);
 
   const showModal = (type, id = null) => setModalInfo({ type, id });
 
@@ -68,17 +90,23 @@ const Channels = ({ setCurrentChannel, state }) => {
         </div>
         <ul
           id="channels-box"
-          className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
+          className="nav flex-column nav-pills nav-fill px-2 mb-3 h-100 d-block overflow-auto"
         >
-          {channels.map(({ name, id, removable }) => {
+          {channels.map(({ name, id, removable }, index) => {
+            console.log('index map', index );
+            const liClass = cn('nav-item w-100', {
+            })
+            
             const bntClasses = cn('w-100 rounded-0 text-start btn', {
               'btn-secondary': state === id,
             });
             const dropDwnVar = cn({
               secondary: state === id,
             });
+            const currentRef = (index === lastIndex) ? lastElRef : null;
+            console.log('currentRef', currentRef);
             return removable ? (
-              <li key={id} className="nav-item w-100">
+              <li key={id} className={liClass} ref={currentRef} >
                 <Dropdown as={ButtonGroup} className="d-flex">
                   <Button
                     onClick={() => setCurrentChannel(id)}
@@ -113,7 +141,7 @@ const Channels = ({ setCurrentChannel, state }) => {
                 </Dropdown>
               </li>
             ) : (
-              <li key={id} className="nav-item w-100">
+              <li key={id} className={liClass}  ref={currentRef}>
                 <button
                   id={id}
                   onClick={() => setCurrentChannel(id)}
@@ -134,3 +162,7 @@ const Channels = ({ setCurrentChannel, state }) => {
 };
 
 export default Channels;
+
+
+// overflow-auto
+// { block: "end", behavior: "smooth" }

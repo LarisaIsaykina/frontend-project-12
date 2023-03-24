@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useFocus from '../hooks/useFocus.jsx';
 
@@ -25,6 +25,8 @@ const Chat = ({ currentChat }) => {
   const [submitError, setError] = useState('');
 
   const inputRef = useRef();
+  const lastElRef = useRef();
+  
   useFocus(inputRef, currentChat);
 
   const currChannelData = useSelector((s) => {
@@ -38,6 +40,17 @@ const Chat = ({ currentChat }) => {
     }
     return [];
   });
+  const lastIndex = messages.length - 1;
+
+    const scrollToBottom = () => {
+    lastElRef.current.scrollIntoView();
+  };
+
+  useEffect(() => {
+    if (lastElRef.current) {
+      scrollToBottom();
+    }
+  }, [messages]);
 
   const handleChangeMessage = (e) => setMessage(e.target.value);
 
@@ -90,13 +103,16 @@ const Chat = ({ currentChat }) => {
             {t('messages', { count: messages.length })}
           </span>
         </div>
-        <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+        <div id="messages-box" className="chat-messages overflow-auto px-5">
           {messages &&
-            messages.map(({ body, username, id }) => (
-              <div key={id} className="text-break mb-2">
+            messages.map(({ body, username, id }, index) => {
+              const currentRef = (index === lastIndex) ? lastElRef : null;
+
+
+              return (<div ref={currentRef} key={id} className="text-break mb-2">
                 <b>{username}</b>: {body}
               </div>
-            ))}
+          )})}
         </div>
         <div className="mt-auto px-5 py-3">
           <form
