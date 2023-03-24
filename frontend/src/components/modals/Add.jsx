@@ -53,8 +53,9 @@ const Add = (props) => {
           dispatch(channelsActions.addChannel(acknowledge.data));
           setInputValue('');
           setCurrentChannel(acknowledge.data.id);
-          onHide();
           getNotifications.added();
+          onHide();
+
         }
 
         setDisabled(false);

@@ -19,15 +19,10 @@ const Channels = ({ setCurrentChannel, state }) => {
   // const [channelsOnPage, setChannels] = useState(null);
   const { t } = useTranslation();
 
-  const btnRef = useRef(null);
-  const auth = useAuth();
-  // const { username } = auth.currentUser;
-  
-  //   if (scrollRef.current) {
-  //     scrollRef.current.scrollIntoView();
-  //   }
+  const [addBtnPressed, setBtnPressed] = useState(false);
 
-  // }, []
+  const btnRef = useRef();
+  const auth = useAuth();
 
   const channels = useSelector(selectors.selectAll);
 
@@ -37,9 +32,8 @@ const Channels = ({ setCurrentChannel, state }) => {
   const [modalInfo, setModalInfo] = useState({ type: null, id: null });
 
   const hideModal = () => {
-
     setModalInfo({ type: null, id: null });
-    btnRef.current.focus();
+    setBtnPressed(true);
 
   };
 
@@ -56,7 +50,13 @@ const Channels = ({ setCurrentChannel, state }) => {
     }
   }, [channels]);
 
-  useFocus(btnRef);
+  useEffect(() => {
+    btnRef.current.focus();
+    setBtnPressed(false);
+    
+  }, [addBtnPressed]);
+
+
 
   const showModal = (type, id = null) => setModalInfo({ type, id });
 
@@ -72,7 +72,6 @@ const Channels = ({ setCurrentChannel, state }) => {
         currChat={state}
         modalInfo={modalInfo}
         onHide={hideModal}
-       
         setCurrentChannel={setCurrentChannel}
       />
     );
@@ -85,7 +84,9 @@ const Channels = ({ setCurrentChannel, state }) => {
           <b>{t('headerChan')}</b>
 
           <Button
+            autoFocus
             className="glowing-border"
+            tabIndex="1"
             ref={btnRef}
             variant="outline-primary"
             onClick={() => showModal('addChat')}

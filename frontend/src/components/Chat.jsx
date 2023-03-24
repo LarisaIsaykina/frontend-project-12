@@ -26,6 +26,7 @@ const Chat = ({ currentChat }) => {
 
   const inputRef = useRef();
   const lastElRef = useRef();
+  useFocus(inputRef);
   
   useFocus(inputRef, currentChat);
 
@@ -45,6 +46,12 @@ const Chat = ({ currentChat }) => {
     const scrollToBottom = () => {
     lastElRef.current.scrollIntoView();
   };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   useEffect(() => {
     if (lastElRef.current) {
