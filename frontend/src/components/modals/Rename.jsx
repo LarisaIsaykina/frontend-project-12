@@ -83,7 +83,7 @@ const Rename = (props) => {
   const inputRef = useRef();
 
   useSelect(inputRef, submitError);
-  // useEffect(() => {
+
   //   inputRef.current.focus();
   // }, []);
   // useEffect(() => {
