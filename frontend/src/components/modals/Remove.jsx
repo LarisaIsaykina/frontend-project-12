@@ -40,7 +40,7 @@ const Remove = (props) => {
   };
 
   return (
-    <Modal show>
+    <Modal show onHide={onHide}>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('chanActions.rmv')}</Modal.Title>
       </Modal.Header>

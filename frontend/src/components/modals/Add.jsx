@@ -15,14 +15,12 @@ import getDictionary from '../../leoprofanity/dictionary.js';
 const Add = (props) => {
   getDictionary();
   const { t } = useTranslation();
-  const { onHide, setCurrentChannel } = props;
+  const { onHide, setCurrentChannel} = props;
   const dispatch = useDispatch();
-  //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
   const [inputValue, setInputValue] = useState('');
-  // const socket = useContext(SocketContext);
-  // console.log("socket in Add", socket);
+
 
   const channels = useSelector((state) =>
     Object.values(state.channels.entities)
@@ -59,11 +57,6 @@ const Add = (props) => {
           getNotifications.added();
         }
 
-        // else {
-        //   setError(t("err.backErr"));
-        //   if (e.code === "ERR_NETWORK") {
-        //     getNotifications.netFail();
-        //   }
         setDisabled(false);
       }
     );
@@ -72,7 +65,7 @@ const Add = (props) => {
   useFocus(inputRef, submitError);
 
   return (
-    <Modal show>
+    <Modal show onHide={onHide}>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('chanActions.add')}</Modal.Title>
       </Modal.Header>

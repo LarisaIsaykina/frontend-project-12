@@ -13,6 +13,7 @@ import { selectors } from '../slices/channelsSlice.js';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useTranslation } from 'react-i18next';
+import useFocus from '../hooks/useFocus.jsx';
 
 const Channels = ({ setCurrentChannel, state }) => {
   // const [channelsOnPage, setChannels] = useState(null);
@@ -36,9 +37,10 @@ const Channels = ({ setCurrentChannel, state }) => {
   const [modalInfo, setModalInfo] = useState({ type: null, id: null });
 
   const hideModal = () => {
-    btnRef.current.focus();
 
     setModalInfo({ type: null, id: null });
+    btnRef.current.focus();
+
   };
 
   const lastElRef = useRef();
@@ -54,6 +56,8 @@ const Channels = ({ setCurrentChannel, state }) => {
     }
   }, [channels]);
 
+  useFocus(btnRef);
+
   const showModal = (type, id = null) => setModalInfo({ type, id });
 
   const renderModal = ({ modalInfo, hideModal }) => {
@@ -68,6 +72,7 @@ const Channels = ({ setCurrentChannel, state }) => {
         currChat={state}
         modalInfo={modalInfo}
         onHide={hideModal}
+       
         setCurrentChannel={setCurrentChannel}
       />
     );

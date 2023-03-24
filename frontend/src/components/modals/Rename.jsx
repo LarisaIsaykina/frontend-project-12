@@ -91,7 +91,7 @@ const Rename = (props) => {
   // }, [submitError]);
 
   return (
-    <Modal show>
+    <Modal show onHide={onHide}>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{t('chanActions.add')}</Modal.Title>
       </Modal.Header>
