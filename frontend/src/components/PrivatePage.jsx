@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Channels from './Channels.jsx';
 import Chat from './Chat.jsx';
 
-// import useToken from "./../hooks/useToken";
-// import useFetchData from "./hooks/useFetchData";
 import getNotifications from './../toast/toast.js';
 
 import axios from 'axios';
@@ -14,9 +12,10 @@ import { useDispatch } from 'react-redux';
 // import { actions as usersActions } from "./slices/usersSlice.js";
 import { actions as messagesActions } from './../slices/messagesSlice.js';
 import { actions as channelsActions } from './../slices/channelsSlice.js';
+import ChannelProvider from './ChannelProvider.jsx';
 
 const PrivatePage = () => {
-  const [currentChannel, setCurrentChannel] = useState(1); // какого канала показан чат
+  // const [currentChannel, setCurrentChannel] = useState(1); // какого канала показан чат
   const [error, setError] = useState(''); //
 
   const dispatch = useDispatch();
@@ -49,21 +48,18 @@ const PrivatePage = () => {
 
   return (
     <>
-      {/* <Navbar bg="light" expand="lg">
-        <Nav className="mr-auto">
-          <Nav.Link as={Link} to="/">
-            {t("header1")}
-          </Nav.Link>
-        </Nav>
-      </Navbar> */}
+    <ChannelProvider>
       <div className="row h-100 bg-white flex-md-row overflow-hidden">
         {' '}
         <Channels
-          state={currentChannel}
-          setCurrentChannel={setCurrentChannel}
+          // state={currentChannel}
+          // setCurrentChannel={setCurrentChannel}
         />
-        <Chat currentChat={currentChannel} />
+        <Chat 
+        // currentChat={currentChannel} 
+        />
       </div>
+      </ChannelProvider>
     </>
   );
 };

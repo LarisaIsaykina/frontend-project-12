@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 // import _ from "lodash";
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Modal, FormGroup, FormControl, Form, Button } from 'react-bootstrap';
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
+import useChannel from '../../hooks/useChannel.jsx';
 import getSchema from '../../schemas/add';
 import useSelect from '../../hooks/useSelect.jsx';
 import { selectors } from '../../slices/channelsSlice.js';
@@ -14,8 +15,15 @@ import * as filter from 'leo-profanity';
 import getDictionary from '../../leoprofanity/dictionary.js';
 
 const Rename = (props) => {
+
+  const { currentChannel,
+    setChannel,
+    clearChannel } =  useChannel();
+
+    console.log('current')
+
   getDictionary();
-  const { onHide, currChat } = props;
+  const { onHide, modalInfo } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   //   const [value, setValue] = useState('');
@@ -24,7 +32,7 @@ const Rename = (props) => {
 
   const channels = useSelector(selectors.selectAll);
   const currChatData = useSelector((state) =>
-    selectors.selectById(state, currChat)
+    selectors.selectById(state, modalInfo.id)
   );
   const { name } = currChatData;
 
@@ -56,16 +64,16 @@ const Rename = (props) => {
 
     socket.emit(
       'renameChannel',
-      { id: currChat, name: filter.clean(inputValue) },
+      { id: modalInfo.id, name: filter.clean(inputValue) },
       (acknowledge) => {
         if (acknowledge.status === 'ok') {
           setDisabled(false);
-          dispatch(
-            channelsActions.renameChannel({
-              id: currChat,
-              name: filter.clean(inputValue),
-            })
-          );
+          // dispatch(
+          //   channelsActions.renameChannel({
+          //     id: currChat,
+          //     name: filter.clean(inputValue),
+          //   })
+          // );
           setInputValue('');
           onHide();
           getNotifications.renamed();

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import useFocus from '../hooks/useFocus.jsx';
 
@@ -6,6 +6,7 @@ import useFocus from '../hooks/useFocus.jsx';
 
 // import { fetchMessages } from "../slices/messagesSlice.js";
 // import { SocketContext } from "../contexts/SocketContext.jsx";
+import useChannel from '../hooks/useChannel.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import socket from '../socket';
 import { selectors } from '../slices/channelsSlice.js';
@@ -13,9 +14,13 @@ import * as filter from 'leo-profanity';
 import getDictionary from '../leoprofanity/dictionary.js';
 import { useTranslation } from 'react-i18next';
 
-const Chat = ({ currentChat }) => {
+const Chat = () => {
   const { t } = useTranslation();
   getDictionary();
+  const { currentChannel,
+        setChannel,
+        clearChannel } = useChannel();
+
 
   const auth = useAuth();
   const userData = auth.currentUser || null;
@@ -28,16 +33,16 @@ const Chat = ({ currentChat }) => {
   const lastElRef = useRef();
   useFocus(inputRef);
   
-  useFocus(inputRef, currentChat);
+  useFocus(inputRef, currentChannel);
 
   const currChannelData = useSelector((s) => {
-    return selectors.selectById(s, currentChat);
+    return selectors.selectById(s, currentChannel);
   });
 
   const messages = useSelector((state) => {
     const allMessages = Object.values(state.messages.entities);
     if (allMessages) {
-      return allMessages.filter((i) => i.channelId === currentChat);
+      return allMessages.filter((i) => i.channelId === currentChannel);
     }
     return [];
   });
@@ -74,7 +79,7 @@ const Chat = ({ currentChat }) => {
       'newMessage',
       {
         body: censoredMessage,
-        channelId: currentChat,
+        channelId: currentChannel,
         username: userData.username,
       },
       (response) => {

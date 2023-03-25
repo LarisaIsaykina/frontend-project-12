@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 // import { useSelector, useDispatch } from "react-redux";
 
@@ -8,26 +8,39 @@ import getModal from './modals/index.js';
 
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import useAuth from '../hooks/useAuth.jsx';
+import useChannel from '../hooks/useChannel.jsx';
 import { selectors } from '../slices/channelsSlice.js';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useTranslation } from 'react-i18next';
-import useFocus from '../hooks/useFocus.jsx';
 
-const Channels = ({ setCurrentChannel, state }) => {
+const Channels = () => {
   // const [channelsOnPage, setChannels] = useState(null);
-  const { t } = useTranslation();
+  const { currentChannel,
+        setChannel,
+        clearChannel } =  useChannel();
 
+  console.log('current channel', currentChannel);
+
+
+
+  const { t } = useTranslation();
+  
   const [addBtnPressed, setBtnPressed] = useState(false);
 
   const btnRef = useRef();
-  const auth = useAuth();
 
   const channels = useSelector(selectors.selectAll);
+  const ids = useSelector(selectors.selectIds);
+
+
+  useEffect(() => {
+    if (!ids.includes(currentChannel)) {
+      clearChannel();
+    }
+  }, [channels]);
 
   const lastIndex = channels.length - 1;
-  console.log('last index', lastIndex);
 
   const [modalInfo, setModalInfo] = useState({ type: null, id: null });
 
@@ -69,10 +82,9 @@ const Channels = ({ setCurrentChannel, state }) => {
     return (
       <Component
         channels={channels}
-        currChat={state}
         modalInfo={modalInfo}
         onHide={hideModal}
-        setCurrentChannel={setCurrentChannel}
+        // setCurrentChannel={setCurrentChannel}
       />
     );
   };
@@ -99,23 +111,22 @@ const Channels = ({ setCurrentChannel, state }) => {
           className="nav flex-column nav-pills nav-fill px-2 mb-3 h-100 d-block overflow-auto"
         >
           {channels.map(({ name, id, removable }, index) => {
-            console.log('index map', index );
             const liClass = cn('nav-item w-100', {
             })
             
             const bntClasses = cn('w-100 rounded-0 text-start btn', {
-              'btn-secondary': state === id,
+              'btn-secondary': currentChannel === id,
             });
             const dropDwnVar = cn({
-              secondary: state === id,
+              secondary: currentChannel === id,
             });
             const currentRef = (index === lastIndex) ? lastElRef : null;
-            console.log('currentRef', currentRef);
+
             return removable ? (
               <li key={id} className={liClass} ref={currentRef} >
                 <Dropdown as={ButtonGroup} className="d-flex">
                   <Button
-                    onClick={() => setCurrentChannel(id)}
+                    onClick={() => setChannel(id)}
                     className="text-truncate w-100 rounded-0 text-start"
                     variant={dropDwnVar}
                   >
@@ -150,7 +161,7 @@ const Channels = ({ setCurrentChannel, state }) => {
               <li key={id} className={liClass}  ref={currentRef}>
                 <button
                   id={id}
-                  onClick={() => setCurrentChannel(id)}
+                  onClick={() => setChannel(id)}
                   type="button"
                   className={bntClasses}
                 >

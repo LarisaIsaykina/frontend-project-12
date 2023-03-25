@@ -6,20 +6,26 @@ import { Modal, FormGroup, FormControl, Form, Button } from 'react-bootstrap';
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
 import useFocus from '../../hooks/useFocus.jsx';
+import useChannel from '../../hooks/useChannel.jsx';
 import getSchema from '../../schemas/add.js';
 import socket from '../../socket';
 import getNotifications from '../../toast/toast.js';
 import * as filter from 'leo-profanity';
 import getDictionary from '../../leoprofanity/dictionary.js';
+import { useContext } from 'react';
 
 const Add = (props) => {
+
   getDictionary();
   const { t } = useTranslation();
-  const { onHide, setCurrentChannel} = props;
-  const dispatch = useDispatch();
+  const { onHide } = props;
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
   const [inputValue, setInputValue] = useState('');
+    const { currentChannel,
+        setChannel,
+        clearChannel } =  useChannel();
+  
 
 
   const channels = useSelector((state) =>
@@ -50,9 +56,9 @@ const Add = (props) => {
       (acknowledge) => {
         if (acknowledge.status === 'ok') {
           setDisabled(false);
-          dispatch(channelsActions.addChannel(acknowledge.data));
+          // dispatch(channelsActions.addChannel(acknowledge.data));
           setInputValue('');
-          setCurrentChannel(acknowledge.data.id);
+          setChannel(acknowledge.data.id);
           getNotifications.added();
           onHide();
 

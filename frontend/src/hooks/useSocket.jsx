@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import socket from '../socket';
 import { useDispatch } from 'react-redux';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
+import { actions as channelActions } from '../slices/channelsSlice.js'
 import getNotifications from '../toast/toast';
 
 const useSocket = () => {
@@ -39,14 +40,30 @@ const useSocket = () => {
     });
 
     socket.on('newChannel', (payload) => {
+      console.log('payload new chan', payload)
+      dispatch(channelActions.addChannel(payload));
+
       // console.log('listening to new channels!!');
       // console.log(payload); // { id: 6, name: "new channel", removable: true }
     });
 
     socket.on('removeChannel', (payload) => {
+            console.log('payload remove chan', payload)
+
+      dispatch(channelActions.removeChannel(payload.id));
+
       // console.log(payload); // { id: 6 };
     });
     socket.on('renameChannel', (payload) => {
+      console.log('payload rename', payload);
+
+
+          dispatch(
+            channelActions.renameChannel(
+              payload
+            )
+          );
+
       // console.log(payload); // { id: 7, name: "new name channel", removable: true }
     });
   }, []);
