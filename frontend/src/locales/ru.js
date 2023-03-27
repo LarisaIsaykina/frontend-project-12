@@ -47,7 +47,7 @@ const ru = {
     },
     success: {
       added: 'Канал создан',
-      removed: 'Канал удален',
+      removed: 'Канал удалён',
       renamed: 'Канал переименован',
     },
 
