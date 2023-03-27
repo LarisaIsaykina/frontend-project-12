@@ -24,14 +24,7 @@ const getNotifications = {
       position: toast.POSITION.TOP_RIGHT,
     });
   },
-  // toast.error("Error Notification !", {
-  //   position: toast.POSITION.TOP_LEFT,
-  // });
 
-  // toast("Custom Style Notification with css class!", {
-  //   position: toast.POSITION.BOTTOM_RIGHT,
-  //   className: "foo-bar",
-  // });
 };
 
 export default getNotifications;

@@ -1,9 +1,6 @@
 import React, { useState, useRef } from 'react';
-// import _ from "lodash";
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useSelector } from 'react-redux';
 import { Modal, FormGroup, FormControl, Form, FormLabel, Button } from 'react-bootstrap';
-import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
 import useFocus from '../../hooks/useFocus.jsx';
 import useChannel from '../../hooks/useChannel.jsx';
@@ -12,7 +9,6 @@ import socket from '../../socket';
 import getNotifications from '../../toast/toast.js';
 import * as filter from 'leo-profanity';
 import getDictionary from '../../leoprofanity/dictionary.js';
-import { useContext } from 'react';
 
 const Add = (props) => {
 
@@ -22,15 +18,11 @@ const Add = (props) => {
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
   const [inputValue, setInputValue] = useState('');
-    const { currentChannel,
-        setChannel,
-        clearChannel } =  useChannel();
+    const { setChannel } =  useChannel();
   
-
-
   const channels = useSelector((state) =>
     Object.values(state.channels.entities)
-  ); // обращение к состоянию
+  );
   const chanNames = channels.map((channel) => channel.name);
   const schema = getSchema(chanNames);
 

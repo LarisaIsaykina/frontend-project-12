@@ -1,8 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 // import _ from "lodash";
-import { useDispatch } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
 import useChannel from '../../hooks/useChannel.jsx';
 import socket from '../../socket';
@@ -11,15 +9,12 @@ import getNotifications from '../../toast/toast.js';
 const Remove = (props) => {
   const { onHide,  modalInfo } = props;
 
-  console.log('modalInfo in rename', modalInfo);
-
   const { t } = useTranslation();
     const { currentChannel,
         setChannel,
         clearChannel } =  useChannel();  //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
-  // const socket = useContext(SocketContext);
 
   const handleSubmit = () => {
     setDisabled(true);
@@ -31,12 +26,7 @@ const Remove = (props) => {
         clearChannel();
         onHide();
         getNotifications.removed();
-      }
-      // else {
-      //   if (e.code === "ERR_NETWORK") {
-      //     getNotifications.netFail();
-      //   }
-      else {
+      } else {
         setError(t('err.backErr'));
         setDisabled(false);
       }

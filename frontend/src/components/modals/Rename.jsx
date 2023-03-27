@@ -1,11 +1,11 @@
 import React, { useState, useRef, useContext } from 'react';
 // import _ from "lodash";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Modal, FormGroup, FormControl, FormLabel, Form, Button } from 'react-bootstrap';
-import { actions as channelsActions } from '../../slices/channelsSlice.js';
+// import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
-import useChannel from '../../hooks/useChannel.jsx';
+// import useChannel from '../../hooks/useChannel.jsx';
 import getSchema from '../../schemas/add';
 import useSelect from '../../hooks/useSelect.jsx';
 import { selectors } from '../../slices/channelsSlice.js';
@@ -16,16 +16,12 @@ import getDictionary from '../../leoprofanity/dictionary.js';
 
 const Rename = (props) => {
 
-  const { currentChannel,
-    setChannel,
-    clearChannel } =  useChannel();
-
-    console.log('current')
-
+  // const { currentChannel,
+  //   setChannel,
+  //   clearChannel } =  useChannel();
   getDictionary();
   const { onHide, modalInfo } = props;
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
@@ -79,10 +75,6 @@ const Rename = (props) => {
           getNotifications.renamed();
         }
 
-        // else {
-        //   if (e.code === "ERR_NETWORK") {
-        //     getNotifications.netFail();
-        //   }
         setError(t('err.backErr'));
         setDisabled(false);
       }
@@ -91,12 +83,6 @@ const Rename = (props) => {
   const inputRef = useRef();
 
   useSelect(inputRef, submitError);
-
-  //   inputRef.current.focus();
-  // }, []);
-  // useEffect(() => {
-  //   inputRef.current.select();
-  // }, [submitError]);
 
   return (
     <Modal show onHide={onHide}>
@@ -145,6 +131,3 @@ const Rename = (props) => {
 };
 
 export default Rename;
-
-//{/* <input disabled={submitDisabled} type="submit" className="btn btn-primary mt-2" value="submit" />
-//{/*<FormControl.Feedback type="invalid">mandatory field</FormControl.Feedback>*/}

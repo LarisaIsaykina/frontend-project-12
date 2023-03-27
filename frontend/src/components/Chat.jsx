@@ -48,7 +48,7 @@ const Chat = () => {
   });
   const lastIndex = messages.length - 1;
 
-    const scrollToBottom = () => {
+  const scrollToBottom = () => {
     lastElRef.current.scrollIntoView();
   };
 
@@ -70,6 +70,7 @@ const Chat = () => {
     if (!message) {
       return;
     }
+  
     setDisabled(true);
 
     e.preventDefault();

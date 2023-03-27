@@ -21,10 +21,6 @@ import PrivatePage from './PrivatePage.jsx';
 import SignupPage from './SignupPage.jsx';
 
 import useSocket from '../hooks/useSocket';
-// import useFetchData from "./hooks/useFetchData";
-// import getNotifications from "./toast/toast.js";
-
-// import React, { useEffect } from "react";
 
 import useToken from '../hooks/useToken';
 

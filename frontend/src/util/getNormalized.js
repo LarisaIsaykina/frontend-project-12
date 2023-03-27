@@ -18,19 +18,3 @@ const getNormalized = (data) => {
   return normalize(data, mySchema);
 };
 export default getNormalized;
-
-//  comments: {
-//     entities: {
-//       comment1: {
-//         id: 'comment1',
-//         author: 'user2',
-//         comment: '.....',
-//       },
-//       comment2: {
-//         id: 'comment2',
-//         author: 'user3',
-//         comment: '.....',
-//       },
-//     },
-//     ids: ['comment1', 'comment2'],
-//   },

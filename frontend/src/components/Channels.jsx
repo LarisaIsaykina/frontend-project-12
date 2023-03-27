@@ -20,10 +20,6 @@ const Channels = () => {
         setChannel,
         clearChannel } =  useChannel();
 
-  console.log('current channel', currentChannel);
-
-
-
   const { t } = useTranslation();
   
   const [addBtnPressed, setBtnPressed] = useState(false);

@@ -10,9 +10,7 @@ const useSocket = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    socket.on('connect', () => {
-      // console.log('we connected!');
-    });
+    socket.on('connect');
     socket.on('connect_failed', () => {
       // console.log('connect_failed!');
 
@@ -23,14 +21,11 @@ const useSocket = () => {
       getNotifications.netFail();
     });
     socket.on('disconnect', () => {
-      // console.log('disconnetc');
 
       getNotifications.netFail();
     });
 
     socket.on('reconnect_failed', () => {
-      // console.log('reconnect_failed!');
-
       getNotifications.netFail();
     });
     socket.on('newMessage', (payload) => {
@@ -40,31 +35,16 @@ const useSocket = () => {
     });
 
     socket.on('newChannel', (payload) => {
-      console.log('payload new chan', payload)
       dispatch(channelActions.addChannel(payload));
-
-      // console.log('listening to new channels!!');
-      // console.log(payload); // { id: 6, name: "new channel", removable: true }
     });
 
     socket.on('removeChannel', (payload) => {
-            console.log('payload remove chan', payload)
-
       dispatch(channelActions.removeChannel(payload.id));
 
-      // console.log(payload); // { id: 6 };
     });
     socket.on('renameChannel', (payload) => {
-      console.log('payload rename', payload);
-
-
-          dispatch(
-            channelActions.renameChannel(
-              payload
-            )
-          );
-
-      // console.log(payload); // { id: 7, name: "new name channel", removable: true }
+      dispatch(
+        channelActions.renameChannel(payload));
     });
   }, []);
 };

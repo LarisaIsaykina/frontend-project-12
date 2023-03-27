@@ -16,7 +16,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import getNotifications from '../toast/toast.js';
-import avatar from '../images/avatar_login.jpg';
+// import avatar from '../images/avatar_login.jpg';
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
@@ -28,7 +28,6 @@ const LoginPage = () => {
   useFocus(inputRef);
   const navigate = useNavigate();
   const auth = useAuth();
-  // console.log('auth in login', auth);
 
   const formik = useFormik({
     initialValues: {
