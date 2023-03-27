@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 // import _ from "lodash";
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Modal, FormGroup, FormControl, FormLabel, Button } from 'react-bootstrap';
+import { Modal, FormGroup, FormControl, Form, FormLabel, Button } from 'react-bootstrap';
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
 import useFocus from '../../hooks/useFocus.jsx';
@@ -80,7 +80,7 @@ const Add = (props) => {
       <Modal.Body>
         <Form noValidate onSubmit={handleSubmit}>
           <FormGroup controlId="channelName">
-            <FormLabel>Имя канала</FormLabel>
+            <FormLabel className="visually-hidden">Имя канала</FormLabel>
             <FormControl
               ref={inputRef}
               onChange={handleChange}

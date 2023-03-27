@@ -107,7 +107,7 @@ const Rename = (props) => {
       <Modal.Body>
         <Form noValidate onSubmit={handleSubmit}>
           <FormGroup controlId="inputValue">
-          <FormLabel>Имя канала</FormLabel>
+          <FormLabel className="visually-hidden">Имя канала</FormLabel>
 
             <FormControl
               ref={inputRef}
