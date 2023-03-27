@@ -125,6 +125,7 @@ const Channels = () => {
             return removable ? (
               <li key={id} className={liClass} ref={currentRef} >
                 <Dropdown as={ButtonGroup} className="d-flex">
+
                   <Button
                     onClick={() => setChannel(id)}
                     className="text-truncate w-100 rounded-0 text-start"
@@ -138,8 +139,9 @@ const Channels = () => {
                     className="flex-grow-0 rounded-0 text-start"
                     split
                     variant={dropDwnVar}
-                    id="dropdown-split-basic"
-                  />
+                    id="dropdown-split-basic">
+                    <span class="visually-hidden">Управление каналом</span>
+                  </Dropdown.Toggle>
 
                   <Dropdown.Menu>
                     <Dropdown.Item
