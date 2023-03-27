@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 // import _ from "lodash";
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Modal, FormGroup, FormControl, Form, Button } from 'react-bootstrap';
+import { Modal, FormGroup, FormControl, FormLabel, Form, Button } from 'react-bootstrap';
 import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
 import useChannel from '../../hooks/useChannel.jsx';
@@ -107,6 +107,8 @@ const Rename = (props) => {
       <Modal.Body>
         <Form noValidate onSubmit={handleSubmit}>
           <FormGroup controlId="inputValue">
+          <FormLabel>Имя канала</FormLabel>
+
             <FormControl
               ref={inputRef}
               onChange={handleChange}
