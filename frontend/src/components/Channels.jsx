@@ -56,7 +56,7 @@ const Channels = () => {
   useEffect(() => {
     if (lastElRef.current) {
       scrollToBottom();
-    } 
+    }
   }, [channels]);
 
   useEffect(() => {
