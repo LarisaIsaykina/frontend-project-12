@@ -18,11 +18,8 @@ const useToken = (dependency) => {
       // setIsLoggedIn(true);
 
       setLoading('fullfilled');
-    } else {
-      // setIsLoggedIn(false);
-
-      setLoading('error');
-    }
+      return;
+    } setLoading('error');
   }, [dependency]);
 
   // console.log('before return loading state');

@@ -1,9 +1,7 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { actions as channelsActions } from './channelsSlice.js';
 
-
 const { removeChannel } = channelsActions;
-
 
 const messagesAdapter = createEntityAdapter();
 
@@ -18,7 +16,6 @@ const messagesSlice = createSlice({
     removeMessages: messagesAdapter.removeMany,
   },
   extraReducers: (builder) => {
-  
     builder.addCase(removeChannel, (state, action) => {
       const channelId = action.payload;
       // Выбираем все комментарии кроме тех, что нужно удалить

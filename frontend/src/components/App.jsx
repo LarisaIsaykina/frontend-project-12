@@ -54,7 +54,7 @@ const AuthButton = () => {
       return;
     }
     setRouteOpen(false);
-  }, [loadingState]);
+  }, [loadingState, auth.loggedIn]);
 
   if (routeOpen) {
     return <Button onClick={auth.logOut}>{t('btns.logout')}</Button>;
@@ -94,7 +94,7 @@ const PrivateRoute = ({ children }) => {
       return;
     }
     setRouteOpen(false);
-  }, [loadingState, navigate]);
+  }, [loadingState, navigate, auth.loggedIn]);
 
   if (routeOpen) {
     return children;

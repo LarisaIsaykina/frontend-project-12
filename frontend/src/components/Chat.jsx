@@ -1,5 +1,10 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+/* eslint-disable no-conditional-statement */
+import React, {
+  useState, useRef, useEffect,
+} from 'react';
 import { useSelector } from 'react-redux';
+import * as filter from 'leo-profanity';
+import { useTranslation } from 'react-i18next';
 import useFocus from '../hooks/useFocus.jsx';
 
 // import { selectors as messagesSelectors } from "../slices/messagesSlice.js";
@@ -10,17 +15,12 @@ import useChannel from '../hooks/useChannel.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import socket from '../socket';
 import { selectors } from '../slices/channelsSlice.js';
-import * as filter from 'leo-profanity';
 import getDictionary from '../leoprofanity/dictionary.js';
-import { useTranslation } from 'react-i18next';
 
 const Chat = () => {
   const { t } = useTranslation();
   getDictionary();
-  const { currentChannel,
-        setChannel,
-        clearChannel } = useChannel();
-
+  const { currentChannel } = useChannel();
 
   const auth = useAuth();
   const userData = auth.currentUser || null;
@@ -32,12 +32,10 @@ const Chat = () => {
   const inputRef = useRef();
   const lastElRef = useRef();
   useFocus(inputRef);
-  
+
   useFocus(inputRef, currentChannel);
 
-  const currChannelData = useSelector((s) => {
-    return selectors.selectById(s, currentChannel);
-  });
+  const currChannelData = useSelector((s) => selectors.selectById(s, currentChannel));
 
   const messages = useSelector((state) => {
     const allMessages = Object.values(state.messages.entities);
@@ -54,13 +52,13 @@ const Chat = () => {
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus();
+    inputRef.current.focus();
     }
   }, []);
 
   useEffect(() => {
     if (lastElRef.current) {
-      scrollToBottom();
+    scrollToBottom();
     }
   }, [messages]);
 
@@ -70,7 +68,7 @@ const Chat = () => {
     if (!message) {
       return;
     }
-  
+
     setDisabled(true);
 
     e.preventDefault();
@@ -89,11 +87,10 @@ const Chat = () => {
 
           setMessage('');
           setError('');
-        } else {
-          setError('submit failed');
-          setDisabled(false);
-        }
-      }
+          return;
+        } setError('submit failed');
+        setDisabled(false);
+      },
     );
   };
 
@@ -110,22 +107,30 @@ const Chat = () => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            {currChannelData && <b># {currChannelData.name}</b>}
+            {currChannelData && (
+            <b>
+              #
+              {currChannelData.name}
+            </b>
+            )}
           </p>
           <span className="text-muted">
             {t('messages', { count: messages.length })}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
-          {messages &&
-            messages.map(({ body, username, id }, index) => {
+          {messages
+            && messages.map(({ body, username, id }, index) => {
               const currentRef = (index === lastIndex) ? lastElRef : null;
 
-
-              return (<div ref={currentRef} key={id} className="text-break mb-2">
-                <b>{username}</b>: {body}
-              </div>
-          )})}
+              return (
+                <div ref={currentRef} key={id} className="text-break mb-2">
+                  <b>{username}</b>
+                  :
+                  {body}
+                </div>
+              );
+            })}
         </div>
         <div className="mt-auto px-5 py-3">
           <form
@@ -143,7 +148,8 @@ const Chat = () => {
                 className="border-0 p-0 ps-2 form-control"
                 value={message}
                 disabled={submitDisabled}
-              ></input>{' '}
+              />
+              {' '}
               <button
                 type="submit"
                 value="Submit"
@@ -160,7 +166,7 @@ const Chat = () => {
                   <path
                     fillRule="evenodd"
                     d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
-                  ></path>
+                  />
                 </svg>
                 <span className="visually-hidden">{t('btns.sbmt')}</span>
               </button>

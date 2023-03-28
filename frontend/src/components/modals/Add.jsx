@@ -1,28 +1,27 @@
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { Modal, FormGroup, FormControl, Form, FormLabel, Button } from 'react-bootstrap';
+import {
+  Modal, FormGroup, FormControl, Form, FormLabel, Button,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import * as filter from 'leo-profanity';
 import useFocus from '../../hooks/useFocus.jsx';
 import useChannel from '../../hooks/useChannel.jsx';
 import getSchema from '../../schemas/add.js';
 import socket from '../../socket';
 import getNotifications from '../../toast/toast.js';
-import * as filter from 'leo-profanity';
 import getDictionary from '../../leoprofanity/dictionary.js';
 
 const Add = (props) => {
-
   getDictionary();
   const { t } = useTranslation();
   const { onHide } = props;
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
   const [inputValue, setInputValue] = useState('');
-    const { setChannel } =  useChannel();
-  
-  const channels = useSelector((state) =>
-    Object.values(state.channels.entities)
-  );
+  const { setChannel } = useChannel();
+
+  const channels = useSelector((state) => Object.values(state.channels.entities));
   const chanNames = channels.map((channel) => channel.name);
   const schema = getSchema(chanNames);
 
@@ -31,15 +30,14 @@ const Add = (props) => {
     setInputValue(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setDisabled(true);
     try {
       await schema.validate(inputValue);
-    } catch (e) {
-      setError(e.message);
+    } catch (error) {
+      setError(error.message);
       setDisabled(false);
-      return;
     }
 
     socket.emit(
@@ -53,11 +51,11 @@ const Add = (props) => {
           setChannel(acknowledge.data.id);
           getNotifications.added();
           onHide();
-
+          return;
         }
 
         setDisabled(false);
-      }
+      },
     );
   };
   const inputRef = useRef();
@@ -109,6 +107,3 @@ const Add = (props) => {
 };
 
 export default Add;
-
-//{/* <input disabled={submitDisabled} type="submit" className="btn btn-primary mt-2" value="submit" />
-//{/*<FormControl.Feedback type="invalid">mandatory field</FormControl.Feedback>*/}

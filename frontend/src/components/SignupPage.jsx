@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import useFocus from '../hooks/useFocus.jsx';
+import { Button, Form } from 'react-bootstrap';
 
 import axios from 'axios';
 import React, { useState, useRef } from 'react';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import routes from '../contexts/routes.js';
 import useAuth from '../hooks/useAuth.jsx';
-import { Form } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
+
+import useFocus from '../hooks/useFocus.jsx';
 import signupSchema from '../schemas/signup.js';
 import getNotifications from '../toast/toast.js';
 import avatar from '../images/avatar_signup.jpg';
@@ -54,15 +54,13 @@ const SignupPage = () => {
         setSubmitDisabled(false);
         if (e.code === 'ERR_NETWORK') {
           getNotifications.netFail();
-        } else if (e.response.status === 409) {
+          return;
+        } if (e.response.status === 409) {
           inputRef.current.select();
           setSignupError(t('err.signup'));
-
           return;
-        } else {
-          setSignupError(e.message);
-          throw e;
-        }
+        } setSignupError(e.message);
+        throw e;
       }
     },
   });
@@ -73,7 +71,7 @@ const SignupPage = () => {
         <div className="col-12 com-md-8 col-xxl-6">
           <div className="card shadow-sm">
             <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-              <img src={avatar} className="rounded-circle" alt="Войти"></img>
+              <img src={avatar} className="rounded-circle" alt="Войти" />
             </div>
             <h1>{t('signup.header')}</h1>
             <Form noValidate onSubmit={formik.handleSubmit}>
@@ -91,8 +89,8 @@ const SignupPage = () => {
                   value={formik.values.username}
                   onChange={formik.handleChange}
                   isInvalid={
-                    (!!formik.errors.username && !!formik.touched.username) ||
-                    !!signupError
+                    (!!formik.errors.username && !!formik.touched.username)
+                    || !!signupError
                   }
                 />
 
@@ -114,8 +112,8 @@ const SignupPage = () => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   isInvalid={
-                    (!!formik.errors.password && !!formik.touched.password) ||
-                    signupError
+                    (!!formik.errors.password && !!formik.touched.password)
+                    || signupError
                   }
                 />
 
@@ -137,9 +135,9 @@ const SignupPage = () => {
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                   isInvalid={
-                    (!!formik.errors.confirmPassword &&
-                      !!formik.touched.confirmPassword) ||
-                    signupError
+                    (!!formik.errors.confirmPassword
+                      && !!formik.touched.confirmPassword)
+                    || signupError
                   }
                 />
 

@@ -1,41 +1,33 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef } from 'react';
 // import _ from "lodash";
 import { useSelector } from 'react-redux';
 
-import { Modal, FormGroup, FormControl, FormLabel, Form, Button } from 'react-bootstrap';
+import {
+  Modal, FormGroup, FormControl, FormLabel, Form, Button,
+} from 'react-bootstrap';
 // import { actions as channelsActions } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
 // import useChannel from '../../hooks/useChannel.jsx';
+import * as filter from 'leo-profanity';
 import getSchema from '../../schemas/add';
 import useSelect from '../../hooks/useSelect.jsx';
 import { selectors } from '../../slices/channelsSlice.js';
 import socket from '../../socket';
 import getNotifications from '../../toast/toast.js';
-import * as filter from 'leo-profanity';
 import getDictionary from '../../leoprofanity/dictionary.js';
 
 const Rename = (props) => {
-
-  // const { currentChannel,
-  //   setChannel,
-  //   clearChannel } =  useChannel();
   getDictionary();
   const { onHide, modalInfo } = props;
   const { t } = useTranslation();
-  //   const [value, setValue] = useState('');
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
 
   const channels = useSelector(selectors.selectAll);
-  const currChatData = useSelector((state) =>
-    selectors.selectById(state, modalInfo.id)
-  );
-  const { name } = currChatData;
+  const currChatData = useSelector((state) => selectors.selectById(state, modalInfo.id));
 
-  const chanNames = channels.map(({ name }) => {
-    return name;
-  });
-  const [inputValue, setInputValue] = useState(name);
+  const chanNames = channels.map(({ name }) => name);
+  const [inputValue, setInputValue] = useState(currChatData.name);
 
   const schema = getSchema(chanNames);
 
@@ -45,15 +37,15 @@ const Rename = (props) => {
     setInputValue(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     setDisabled(true);
     try {
       await schema.validate(inputValue);
-    } catch (e) {
+    } catch (err) {
       // console.log(e);
-      setError(e.message);
+      setError(err.message);
       setDisabled(false);
       return;
     }
@@ -73,11 +65,12 @@ const Rename = (props) => {
           setInputValue('');
           onHide();
           getNotifications.renamed();
+          return;
         }
 
         setError(t('err.backErr'));
         setDisabled(false);
-      }
+      },
     );
   };
   const inputRef = useRef();
@@ -93,7 +86,7 @@ const Rename = (props) => {
       <Modal.Body>
         <Form noValidate onSubmit={handleSubmit}>
           <FormGroup controlId="inputValue">
-          <FormLabel className="visually-hidden">Имя канала</FormLabel>
+            <FormLabel className="visually-hidden">Имя канала</FormLabel>
 
             <FormControl
               ref={inputRef}

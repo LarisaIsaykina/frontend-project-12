@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import socket from '../socket';
 import { useDispatch } from 'react-redux';
+import socket from '../socket';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
-import { actions as channelActions } from '../slices/channelsSlice.js'
+import { actions as channelActions } from '../slices/channelsSlice.js';
 import getNotifications from '../toast/toast';
 
 const useSocket = () => {
@@ -10,7 +10,6 @@ const useSocket = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    socket.on('connect');
     socket.on('connect_failed', () => {
       // console.log('connect_failed!');
 
@@ -21,7 +20,6 @@ const useSocket = () => {
       getNotifications.netFail();
     });
     socket.on('disconnect', () => {
-
       getNotifications.netFail();
     });
 
@@ -40,11 +38,11 @@ const useSocket = () => {
 
     socket.on('removeChannel', (payload) => {
       dispatch(channelActions.removeChannel(payload.id));
-
     });
     socket.on('renameChannel', (payload) => {
       dispatch(
-        channelActions.renameChannel(payload));
+        channelActions.renameChannel(payload),
+      );
     });
   }, []);
 };

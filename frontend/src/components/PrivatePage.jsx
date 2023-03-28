@@ -1,25 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import Channels from './Channels.jsx';
 import Chat from './Chat.jsx';
 
-import getNotifications from './../toast/toast.js';
+import getNotifications from '../toast/toast.js';
 
-import axios from 'axios';
-import routes from './../contexts/routes';
-import getAuthHeader from './../util/getHeader';
-import getNormalized from './../util/getNormalized';
-import { useDispatch } from 'react-redux';
+import routes from '../contexts/routes';
+import getAuthHeader from '../util/getHeader';
+import getNormalized from '../util/getNormalized';
 // import { actions as usersActions } from "./slices/usersSlice.js";
-import { actions as messagesActions } from './../slices/messagesSlice.js';
-import { actions as channelsActions } from './../slices/channelsSlice.js';
+import { actions as messagesActions } from '../slices/messagesSlice.js';
+import { actions as channelsActions } from '../slices/channelsSlice.js';
 import ChannelProvider from './ChannelProvider.jsx';
 
 const PrivatePage = () => {
-  // const [currentChannel, setCurrentChannel] = useState(1); // какого канала показан чат
-  const [error, setError] = useState(''); //
-
   const dispatch = useDispatch();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,9 +31,9 @@ const PrivatePage = () => {
         dispatch(channelsActions.addChannels(Object.values(channels)));
         dispatch(messagesActions.addMessages(Object.values(messages)));
       } catch (e) {
-        setError(e);
         if (e.code === 'ERR_NETWORK') {
           getNotifications.netFail();
+          return;
         }
         throw e;
       }
@@ -47,20 +43,13 @@ const PrivatePage = () => {
   }, []);
 
   return (
-    <>
     <ChannelProvider>
       <div className="row h-100 bg-white flex-md-row overflow-hidden">
         {' '}
-        <Channels
-          // state={currentChannel}
-          // setCurrentChannel={setCurrentChannel}
-        />
-        <Chat 
-        // currentChat={currentChannel} 
-        />
+        <Channels />
+        <Chat />
       </div>
-      </ChannelProvider>
-    </>
+    </ChannelProvider>
   );
 };
 

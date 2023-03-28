@@ -7,29 +7,27 @@ import socket from '../../socket';
 import getNotifications from '../../toast/toast.js';
 
 const Remove = (props) => {
-  const { onHide,  modalInfo } = props;
+  const { onHide, modalInfo } = props;
 
   const { t } = useTranslation();
-    const { currentChannel,
-        setChannel,
-        clearChannel } =  useChannel();  //   const [value, setValue] = useState('');
+  const { clearChannel, currentChannel } = useChannel();
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
 
+  const switchChannel = () => (currentChannel === modalInfo.id ? clearChannel : null);
+  
   const handleSubmit = () => {
     setDisabled(true);
 
     socket.emit('removeChannel', { id: modalInfo.id }, (acknowledge) => {
       if (acknowledge.status === 'ok') {
         setDisabled(false);
-        // dispatch(channelsActions.removeChannel(modalInfo.id));
-        clearChannel();
+        switchChannel();
         onHide();
         getNotifications.removed();
-      } else {
-        setError(t('err.backErr'));
-        setDisabled(false);
-      }
+        return;
+      } setError(t('err.backErr'));
+      setDisabled(false);
     });
   };
 
@@ -53,7 +51,8 @@ const Remove = (props) => {
               disabled={submitDisabled}
             >
               {' '}
-              {t('btns.rmv')}{' '}
+              {t('btns.rmv')}
+              {' '}
             </Button>
           </Form>
 

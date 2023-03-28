@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import AuthContext from '../contexts/authContext';
 
 const AuthProvider = ({ children }) => {
@@ -25,7 +25,9 @@ const AuthProvider = ({ children }) => {
     setUser,
     clearUser,
   };
-  return <AuthContext.Provider value={props}>{children}</AuthContext.Provider>;
+  const memoizedProps = useMemo(() => (props), [props]);
+
+  return <AuthContext.Provider value={memoizedProps}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

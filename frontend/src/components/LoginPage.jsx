@@ -3,11 +3,6 @@ import React, { useState, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import loginSchema from '../schemas/login.js';
-import useFocus from '../hooks/useFocus.jsx';
-
-import routes from '../contexts/routes.js';
-import useAuth from '../hooks/useAuth.jsx';
 import {
   Form,
   FormControl,
@@ -15,6 +10,11 @@ import {
   FormLabel,
   Button,
 } from 'react-bootstrap';
+import loginSchema from '../schemas/login.js';
+import useFocus from '../hooks/useFocus.jsx';
+
+import routes from '../contexts/routes.js';
+import useAuth from '../hooks/useAuth.jsx';
 import getNotifications from '../toast/toast.js';
 // import avatar from '../images/avatar_login.jpg';
 
@@ -61,7 +61,7 @@ const LoginPage = () => {
         if (e.code === 'ERR_NETWORK') {
           getNotifications.netFail();
           return;
-        } else if (e.response.status === 401) {
+        } if (e.response.status === 401) {
           setAuthFailed(true);
 
           inputRef.current.select();
@@ -141,7 +141,8 @@ const LoginPage = () => {
       </div>
       <div className="card-footer p-4">
         <div className="text-center">
-          <span>{t('footer.quest')}</span>{' '}
+          <span>{t('footer.quest')}</span>
+          {' '}
           <Link as={Link} to="/signup">
             {t('footer.signup')}
           </Link>
