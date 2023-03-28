@@ -15,7 +15,6 @@ const Remove = (props) => {
   const [submitError, setError] = useState('');
 
   const switchChannel = () => (currentChannel === modalInfo.id ? clearChannel : null);
-  
   const handleSubmit = () => {
     setDisabled(true);
 
