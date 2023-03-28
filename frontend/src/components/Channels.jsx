@@ -1,4 +1,3 @@
-/* eslint-disable no-conditional-statement */
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';

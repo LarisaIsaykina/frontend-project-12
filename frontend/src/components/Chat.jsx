@@ -1,4 +1,3 @@
-/* eslint-disable no-conditional-statement */
 import React, {
   useState, useRef, useEffect,
 } from 'react';
@@ -52,13 +51,13 @@ const Chat = () => {
 
   useEffect(() => {
     if (inputRef.current) {
-    inputRef.current.focus();
+      inputRef.current.focus();
     }
   }, []);
 
   useEffect(() => {
     if (lastElRef.current) {
-    scrollToBottom();
+      scrollToBottom();
     }
   }, [messages]);
 
