@@ -19,34 +19,29 @@ import getDictionary from '../leoprofanity/dictionary.js';
 const Chat = () => {
   const { t } = useTranslation();
   getDictionary();
-  const { currentChannel } = useChannel();
-
+  const { currentChannelId } = useChannel();
   const auth = useAuth();
   const userData = auth.currentUser || null;
-
   const [message, setMessage] = useState('');
   const [submitDisabled, setDisabled] = useState(false);
   const [submitError, setError] = useState('');
-
   const inputRef = useRef();
-  const lastElRef = useRef();
+  const currElRef = useRef();
   useFocus(inputRef);
+  useFocus(inputRef, currentChannelId);
 
-  useFocus(inputRef, currentChannel);
-
-  const currChannelData = useSelector((s) => selectors.selectById(s, currentChannel));
+  const currChannelData = useSelector((s) => selectors.selectById(s, currentChannelId));
 
   const messages = useSelector((state) => {
     const allMessages = Object.values(state.messages.entities);
     if (allMessages) {
-      return allMessages.filter((i) => i.channelId === currentChannel);
+      return allMessages.filter((i) => i.channelId === currentChannelId);
     }
     return [];
   });
-  const lastIndex = messages.length - 1;
 
   const scrollToBottom = () => {
-    lastElRef.current.scrollIntoView();
+    currElRef.current.scrollIntoView();
   };
 
   useEffect(() => {
@@ -56,7 +51,7 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    if (lastElRef.current) {
+    if (currElRef.current) {
       scrollToBottom();
     }
   }, [messages]);
@@ -77,7 +72,7 @@ const Chat = () => {
       'newMessage',
       {
         body: censoredMessage,
-        channelId: currentChannel,
+        channelId: currentChannelId,
         username: userData.username,
       },
       (response) => {
@@ -120,12 +115,14 @@ const Chat = () => {
         <div id="messages-box" className="chat-messages overflow-auto px-5">
           {messages
             && messages.map(({ body, username, id }, index) => {
-              const currentRef = (index === lastIndex) ? lastElRef : null;
+              const lastMessageIndex = messages.length - 1;
+              const currentRef = (index === lastMessageIndex) ? currElRef : null;
 
               return (
                 <div ref={currentRef} key={id} className="text-break mb-2">
                   <b>{username}</b>
                   :
+                  {' '}
                   {body}
                 </div>
               );

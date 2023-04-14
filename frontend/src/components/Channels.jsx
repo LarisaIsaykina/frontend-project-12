@@ -18,9 +18,9 @@ import renderModal from '../util/modalUtils';
 const Channels = () => {
   // const [channelsOnPage, setChannels] = useState(null);
   const {
-    currentChannel,
+    currentChannelId,
     setChannel,
-    clearChannel,
+    setDefaulChannel,
   } = useChannel();
 
   const { t } = useTranslation();
@@ -33,12 +33,12 @@ const Channels = () => {
   const ids = useSelector(selectors.selectIds);
 
   useEffect(() => {
-    if (!ids.includes(currentChannel)) {
-      clearChannel();
+    if (!ids.includes(currentChannelId)) {
+      setDefaulChannel();
     }
   }, [channels]);
 
-  const lastIndex = channels.length - 1;
+  const currChannIndex = currentChannelId - 1;
 
   const [modalInfo, setModalInfo] = useState({ type: null, id: null });
 
@@ -47,14 +47,14 @@ const Channels = () => {
     setBtnPressed(true);
   };
 
-  const lastElRef = useRef();
+  const currElRef = useRef();
 
   const scrollToBottom = () => {
-    lastElRef.current.scrollIntoView();
+    currElRef.current.scrollIntoView();
   };
 
   useEffect(() => {
-    if (lastElRef.current) {
+    if (currElRef.current) {
       scrollToBottom();
     }
   }, [channels]);
@@ -91,12 +91,12 @@ const Channels = () => {
           });
 
           const bntClasses = cn('w-100 rounded-0 text-start btn', {
-            'btn-secondary': currentChannel === id,
+            'btn-secondary': currentChannelId === id,
           });
           const dropDwnVar = cn({
-            secondary: currentChannel === id,
+            secondary: currentChannelId === id,
           });
-          const currentRef = (index === lastIndex) ? lastElRef : null;
+          const currentRef = (index === currChannIndex) ? currElRef : null;
 
           return removable ? (
             <li key={id} className={liClass} ref={currentRef}>

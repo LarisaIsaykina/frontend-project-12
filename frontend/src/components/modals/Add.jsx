@@ -23,6 +23,7 @@ const Add = (props) => {
 
   const channels = useSelector((state) => Object.values(state.channels.entities));
   const chanNames = channels.map((channel) => channel.name);
+  console.log('channames', chanNames);
   const schema = getSchema(chanNames);
 
   const handleChange = (e) => {
@@ -38,6 +39,7 @@ const Add = (props) => {
     } catch (error) {
       setError(error.message);
       setDisabled(false);
+      return;
     }
 
     socket.emit(

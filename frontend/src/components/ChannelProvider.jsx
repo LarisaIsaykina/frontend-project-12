@@ -3,16 +3,16 @@ import ChosenChannel from '../contexts/channelContext';
 
 const ChannelProvider = ({ children }) => {
   const defaultChannelId = 1;
-  const [currentChannel, setCurrentChannel] = useState(defaultChannelId);
+  const [currentChannelId, setCurrentChannel] = useState(defaultChannelId);
 
   const setChannel = (id) => setCurrentChannel(id);
-  const clearChannel = () => setCurrentChannel(defaultChannelId);
+  const setDefaulChannel = () => setCurrentChannel(defaultChannelId);
 
   const props = {
 
-    currentChannel,
+    currentChannelId,
     setChannel,
-    clearChannel,
+    setDefaulChannel,
   };
   const memoizedProps = useMemo(() => (props), [props]);
   return <ChosenChannel.Provider value={memoizedProps}>{children}</ChosenChannel.Provider>;

@@ -7,7 +7,7 @@ const NotFoundErrorPage = () => {
     <>
       <title>{t('404')}</title>
       <div>
-        <header4>{t('404')}</header4>
+        <header>{t('404')}</header>
       </div>
     </>
   );

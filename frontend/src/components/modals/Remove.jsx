@@ -10,11 +10,11 @@ const Remove = (props) => {
   const { onHide, modalInfo } = props;
 
   const { t } = useTranslation();
-  const { clearChannel, currentChannel } = useChannel();
+  const { setDefaultChannel, currentChannelId } = useChannel();
   const [submitDisabled, setDisabled] = useState(false); // до успешного ответа с бэкэнда
   const [submitError, setError] = useState('');
 
-  const switchChannel = () => (currentChannel === modalInfo.id ? clearChannel : null);
+  const switchChannel = () => (currentChannelId === modalInfo.id ? setDefaultChannel : null);
   const handleSubmit = () => {
     setDisabled(true);
 
