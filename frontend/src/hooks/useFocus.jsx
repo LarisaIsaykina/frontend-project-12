@@ -5,7 +5,7 @@ const useFocus = (ref, dependency = null) => {
     if (ref.current) {
       ref.current.focus();
     }
-  }, [ref, dependency]);
+  }, [dependency]);
 };
 
 export default useFocus;
